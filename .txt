@@ -1,0 +1,6 @@
+This is just for collecting all the essetial starting endpoinst that would be used in my version manager.
+
+## Analysis and Stats
+- bY endpoinst
+  - We are going to use the unix timetsamp for date , fday , year
+  (endpoint)
