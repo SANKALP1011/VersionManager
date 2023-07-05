@@ -1,6 +1,18 @@
-This is just for collecting all the essetial starting endpoinst that would be used in my version manager.
 
-## Analysis and Stats
-- bY endpoinst
-  - We are going to use the unix timetsamp for date , fday , year
-  (endpoint)
+# About                                                        July 05, 2023 
+
+- This is the documentation of the entire version manager backend that would be using GitHub authO and its rest api for performing various useful analysis , various functionalities and statistical analysis . With the built in Notion database Integration , it's a dream come true for developers for managing their project in a single place.
+
+##  Endpoints to used 
+
+     - Repo Endpoints
+     
+        - https://raw.githubusercontent.com/SANKALP1011/AnimalHelperApi/master/README.md ( this endpoint would be used to download the repo readme from the GitHub )
+     
+        - https://raw.githubusercontent.com/SANKALP1011/Social-Backend/master/Middleware/loggedIn.middleware.js (this endpoint would be used to fetch the code from the file present in our GitHub repo)
+     
+        - https://api.github.com/repos/SANKALP1011/Social-Backend/contents?path=""  ( this endpoint would be used to get the user repo content ( i.e code folder and other stuff present in the repository )
+        
+        - https://api.github.com/repos/SANKALP1011/Social-Backend/contents/Model?ref=master ( This would return all the files that are present in a particular folder  , here we are talking about the Model folder , our api endpoint would return all the files that are present in our model folder )
+
+        -  

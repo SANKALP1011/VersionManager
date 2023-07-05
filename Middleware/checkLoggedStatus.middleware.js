@@ -3,7 +3,7 @@ const express = require("express");
 
 module.exports = {
   checkLoggedStatus: async (req, res, next) => {
-    if (req.isAuthneticated()) {
+    if (req.isAuthenticated()) {
       next();
     } else {
       next();
