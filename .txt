@@ -15,26 +15,26 @@
         
         - https://api.github.com/repos/SANKALP1011/Social-Backend/contents/Model?ref=master ( This would return all the files that are present in a particular folder  , here we are talking about the Model folder , our api endpoint would return all the files that are present in our model folder )
 
-        -  https://api.github.com/repos/SANKALP1011/Social-Backend/contents/Model?ref=master ( This would return all the files that are present in a particular folder  , here we are talking about the Model folder , our api endpoint would return all the files that are present in our model folder )
+        - https://api.github.com/repos/SANKALP1011/Social-Backend/contents/Model?ref=master ( This would return all the files that are present in a particular folder  , here we are talking about the Model folder , our api endpoint would return all the files that are present in our model folder )
 
         - https://api.github.com/repos/SANKALP1011/Social-Backend/forks ( This would return all the forks that are associated with the repository )
         
         - **https://api.github.com/repos/SANKALP1011/Social-Backend/languages  ( This would return the count of number of lines in a particular language that are present in a particular user , this would be used for perfuming analysis of the user such as which languages he mostly uses , what is his ratio , commits in a particular language , least used languages** 
     
-       - https://api.github.com/repos/SANKALP1011/Social-Backend/topics ( This would return all the topics that are associated with the particular repo made by the user  , can be used for providing the insightful analysis to the overall topics that user likes and works upon )
-       - https://api.github.com/repos/SANKALP1011/Social-Backend ( This would return the user specific repo details )
-       - https://api.github.com/users/SANKALP1011/repos ( This would return all the repo's of the user )
+        - https://api.github.com/repos/SANKALP1011/Social-Backend/topics ( This would return all the topics that are associated with the particular repo made by the user  , can be used for providing the insightful analysis to the overall topics that user likes and works upon )
+        - https://api.github.com/repos/SANKALP1011/Social-Backend ( This would return the user specific repo details )
+        - https://api.github.com/users/SANKALP1011/repos ( This would return all the repo's of the user )
        
 
     # Collaborator Endpoint
 
-          - https://api.github.com/repos/SANKALP1011/AnimalHelperApi/collaborators/SANKALP1011 ( This would check if the person has access as a collaborator to the user repository )
-          - https://api.github.com/repos/SANKALP1011/AnimalHelperApi/collaborators ( This would return all the user's who are the collaborator to the github repository )
+        - https://api.github.com/repos/SANKALP1011/AnimalHelperApi/collaborators/SANKALP1011 ( This would check if the person has access as a collaborator to the user repository )
+        - https://api.github.com/repos/SANKALP1011/AnimalHelperApi/collaborators ( This would return all the user's who are the collaborator to the github repository )
  
     # Commits Endpoint
 
-          - https://api.github.com/repos/SANKALP1011/AnimalHelperApi/commits ( This would return all the commits that are there for a specified repo made by the user )
+        - https://api.github.com/repos/SANKALP1011/AnimalHelperApi/commits ( This would return all the commits that are there for a specified repo made by the user )
           
     # Deployment Endpoint
 
-           - https://api.github.com/repos/SANKALP1011/AnimalHelperApi/deployments ( This would return the deployment of the repo , entire status etc )
+        - https://api.github.com/repos/SANKALP1011/AnimalHelperApi/deployments ( This would return the deployment of the repo , entire status etc )
