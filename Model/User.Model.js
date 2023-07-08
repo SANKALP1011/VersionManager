@@ -45,6 +45,10 @@ const UserSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
+  GithubRepoNames: {
+    type: Array,
+    default: [],
+  },
 });
 
 module.exports = mongoose.model("user", UserSchema);
