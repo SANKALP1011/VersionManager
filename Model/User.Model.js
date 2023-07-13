@@ -49,6 +49,11 @@ const UserSchema = new mongoose.Schema({
     type: Array,
     default: [],
   },
+  GithubRepoId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "UserRepo",
+    unique: true,
+  },
 });
 
 module.exports = mongoose.model("user", UserSchema);
