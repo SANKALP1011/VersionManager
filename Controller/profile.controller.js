@@ -10,4 +10,8 @@ module.exports = {
       return res.status(500).json("User not found");
     }
   },
+  getUserbyId: async (req, res) => {},
+  getGithubRepo: async (req, res) => {},
+  getOpenPullRequest: async (req, res) => {},
+  getStattisticalAnalysis: async (req, res) => {},
 };
