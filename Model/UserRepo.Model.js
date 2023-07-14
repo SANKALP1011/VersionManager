@@ -1,11 +1,17 @@
 const mongoose = require("mongoose");
 
 const UserRepoSchema = new mongoose.Schema({
-  UserId: {
+  userId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
     unique: true,
   },
+  pullRequestId: [
+    {
+      type: mongoose.Schema.ObjectId,
+      ref: "pullrequest",
+    },
+  ],
   repositories: [
     {
       name: {

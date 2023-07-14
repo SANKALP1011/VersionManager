@@ -54,6 +54,12 @@ const UserSchema = new mongoose.Schema({
     ref: "UserRepo",
     unique: true,
   },
+  GithubPullRequest: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "pullrequest",
+    },
+  ],
 });
 
 module.exports = mongoose.model("user", UserSchema);
