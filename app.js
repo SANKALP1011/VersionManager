@@ -3,6 +3,7 @@ const app = express();
 const passport = require("passport");
 const session = require("express-session");
 const GithubStrategy = require("passport-github2").Strategy;
+const mongoose = require("mongoose");
 const {
   githubController,
 } = require("./Controller/githubStrategies.controller");
@@ -11,6 +12,16 @@ const GithubRoutes = require("./Routes/githubAuth.router");
 const ProfileRoutes = require("./Routes/profile.router");
 const key = require("./Config/keys.config");
 const port = process.env.PORT || "3004";
+require("dotenv").config({ path: require("find-config")(".env") });
+
+mongoose
+  .connect(process.env.MONGO_DB_URL)
+  .then(() => {
+    console.log("Database connected");
+  })
+  .catch((e) => {
+    console.log(e);
+  });
 
 app.use(
   session({

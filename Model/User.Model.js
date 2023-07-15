@@ -5,6 +5,10 @@ const UserSchema = new mongoose.Schema({
     type: String,
     default: "",
   },
+  github_Access_Token: {
+    type: String,
+    default: "",
+  },
   GithubUserName: {
     type: String,
     default: "",
