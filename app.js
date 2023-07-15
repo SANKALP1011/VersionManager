@@ -10,6 +10,7 @@ const {
 const InitialRoutes = require("./Routes/initial.router");
 const GithubRoutes = require("./Routes/githubAuth.router");
 const ProfileRoutes = require("./Routes/profile.router");
+const RepoRoutes = require("./Routes/Repository/repos.routes");
 const key = require("./Config/keys.config");
 const port = process.env.PORT || "3004";
 require("dotenv").config({ path: require("find-config")(".env") });
@@ -54,6 +55,7 @@ passport.use(
 app.use(InitialRoutes);
 app.use("/auth", GithubRoutes);
 app.use("/auth", ProfileRoutes);
+app.use("/auth", RepoRoutes);
 
 app.listen(port, (err) => {
   if (err) {

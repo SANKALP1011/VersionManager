@@ -63,7 +63,7 @@ const UserRepoSchema = new mongoose.Schema({
         default: [],
       },
       line_of_count: {
-        type: map,
+        type: Map,
         of: Number,
       },
       branches: [
