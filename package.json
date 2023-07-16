@@ -9,8 +9,9 @@
   "author": "sankalp",
   "license": "ISC",
   "dependencies": {
+    "@octokit/request": "^8.1.0",
     "@octokit/rest": "^20.0.1",
-    "axios": "^1.4.0",
+    "axios": "^0.21.4",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "express-openid-connect": "^2.16.0",
@@ -19,6 +20,7 @@
     "jsonwebtoken": "^9.0.1",
     "mongoose": "^7.3.2",
     "mongoose-autopopulate": "^1.0.1",
+    "node-fetch": "^3.3.1",
     "nodemon": "^2.0.22",
     "passport": "^0.6.0",
     "passport-github2": "^0.1.12"
