@@ -2,7 +2,6 @@ const Repository = require("../Model/UserRepo.Model");
 const User = require("../Model/User.model");
 const { Octokit } = require("@octokit/rest");
 const { getUserRepo } = require("../Github Service/repo.service");
-
 module.exports = {
   getUserRepository: async (req, res) => {
     const userId = req.query.id;
@@ -14,7 +13,34 @@ module.exports = {
         });
       } else {
         const response = await getUserRepo(user.GithubUserName);
-        return res.status(200).json(response);
+
+        const repositoryData = {
+          userId: user._id,
+          repositories: response.map((repo) => ({
+            name: repo.name,
+            private: repo.private,
+            repoUrl: repo.html_url,
+            description: repo.description,
+            dateOfCreation: repo.created_at,
+            repoStarsCount: repo.stargazers_count,
+            repoWatchersCount: repo.watchers_count,
+            buildLanguage: repo.language,
+            repoForkCounts: repo.forks_count,
+            languagesUsedUrl: repo.languages_url,
+            openIssuesCount: repo.open_issues_count,
+            repo_topics: repo.topics || [],
+          })),
+        };
+
+        await Repository.findOneAndUpdate(
+          { userId: user._id },
+          repositoryData,
+          {
+            upsert: true,
+          }
+        );
+
+        return res.status(200).json(repositoryData);
       }
     } catch (err) {
       console.log(err);

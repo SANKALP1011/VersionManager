@@ -11,12 +11,9 @@ module.exports = {
       const response = await axios.default.get(
         `${GITHUB_BASE_URL}/users/${username}/repos`
       );
-
-      console.log(response);
       return response.data;
     } catch (err) {
-      console.error(err);
-      return null;
+      throw new Error(err.message);
     }
   },
 };
