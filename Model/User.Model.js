@@ -49,10 +49,6 @@ const UserSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
-  GithubRepoNames: {
-    type: Array,
-    default: [],
-  },
   GithubRepoId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "UserRepo",
@@ -62,6 +58,8 @@ const UserSchema = new mongoose.Schema({
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: "pullrequest",
+      unique: true,
+      default: "",
     },
   ],
 });
