@@ -17,6 +17,7 @@
     "express-openid-connect": "^2.16.0",
     "express-session": "^1.17.3",
     "find-config": "^1.0.0",
+    "http-status": "^1.6.2",
     "jsonwebtoken": "^9.0.1",
     "mongoose": "^7.3.2",
     "mongoose-autopopulate": "^1.0.1",

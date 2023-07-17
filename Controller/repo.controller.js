@@ -56,4 +56,7 @@ module.exports = {
       });
     }
   },
+  getRepositoryByName: async (req, res) => {},
+  getRepositoryPullRequest: async (req, res) => {},
+  getRepositoryTopic: async (req, res) => {},
 };
