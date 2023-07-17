@@ -1,25 +1,19 @@
-const { Octokit } = require("@octokit/rest");
 const axios = require("axios");
-const { request } = require("@octokit/request");
+const { GITHUB_BASE_URL } = require("../Utils/baseUrl.util");
 const tok = "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";
 
-const octokit = new Octokit({
-  auth: tok,
-});
+axios.default.defaults.headers.common["Authorization"] = tok;
 
 module.exports = {
   getUserRepo: async (username) => {
     console.log(username);
     try {
-      const result = await request(`GET /users/${username}/repos`, {
-        headers: {
-          Accept: "application/vnd.github.v3+json",
-          authorization: `bearer ${tok}`,
-        },
-      });
+      const response = await axios.default.get(
+        `${GITHUB_BASE_URL}/users/${username}/repos`
+      );
 
-      console.log(result);
-      return result;
+      console.log(response);
+      return response.data;
     } catch (err) {
       console.error(err);
       return null;
