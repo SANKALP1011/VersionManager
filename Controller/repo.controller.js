@@ -1,6 +1,7 @@
 const Repository = require("../Model/UserRepo.Model");
 const User = require("../Model/User.model");
 const { getUserRepo } = require("../Github Service/repo.service");
+const { UserNotFoundError } = require("../Errors/userAuth.error");
 
 module.exports = {
   getUserRepository: async (req, res) => {
@@ -8,9 +9,7 @@ module.exports = {
     try {
       const user = await User.findById(userId);
       if (!user) {
-        return res.status(400).json({
-          Error: "This user does not exist",
-        });
+        throw new UserNotFoundError("This user does not exist", 404);
       } else {
         const response = await getUserRepo(user.GithubUserName);
 
@@ -50,10 +49,12 @@ module.exports = {
         return res.status(200).json(repositoryData);
       }
     } catch (err) {
-      console.log(err);
-      return res.status(500).json({
-        Error: "Internal server error",
-      });
+      if (err instanceof UserNotFoundError) {
+        return res.status(400).json({ error: err.message });
+      } else {
+        console.error(err);
+        return res.status(500).json({ error: "Internal server error" });
+      }
     }
   },
   getRepositoryByName: async (req, res) => {},
