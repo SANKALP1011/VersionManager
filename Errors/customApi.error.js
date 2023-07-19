@@ -1,6 +1,6 @@
 class CustomApiErrors extends Error {
-  constructor(message) {
-    super(message);
+  constructor(message, code) {
+    super(message, code);
   }
 }
 

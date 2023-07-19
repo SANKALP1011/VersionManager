@@ -14,6 +14,7 @@ const RepoRoutes = require("./Routes/Repository/repos.routes");
 const key = require("./Config/keys.config");
 const port = process.env.PORT || "3004";
 require("dotenv").config({ path: require("find-config")(".env") });
+const DatabaseError = require("./Errors/databaseError.error");
 
 mongoose
   .connect(process.env.MONGO_DB_URL)
@@ -21,7 +22,10 @@ mongoose
     console.log("Database connected");
   })
   .catch((e) => {
-    console.log(e);
+    throw new DatabaseError(
+      "There is issue while connecting with the database",
+      500
+    );
   });
 
 app.use(
