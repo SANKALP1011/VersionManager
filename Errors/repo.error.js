@@ -1,14 +1,18 @@
 const CustomApiErrors = require("../Errors/customApi.error");
 
 class FetchToFailRepositoriesError extends CustomApiErrors {
-  constructor(message, code) {
-    super(message, code);
+  constructor(message) {
+    super(message);
+    this.name = "RepositoriesNotFoundError";
+    this.statusCode = 404;
   }
 }
 
-class FailtoFetchSingleRep extends CustomApiErrors {
-  constructor(message, code) {
-    super(message, code);
+class FailtoFetchSingleRepoByName extends CustomApiErrors {
+  constructor(message) {
+    super(message);
+    this.name = "FailtoFetchSingleRepByName";
+    this.statusCode = 404;
   }
 }
 
@@ -28,5 +32,5 @@ module.exports = {
   FetchToFailRepositoriesError,
   FailedToFetchRepoFromDatabase,
   FailedToGetRepoReadme,
-  FailtoFetchSingleRep,
+  FailtoFetchSingleRepoByName,
 };

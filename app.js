@@ -15,6 +15,7 @@ const key = require("./Config/keys.config");
 const port = process.env.PORT || "3004";
 require("dotenv").config({ path: require("find-config")(".env") });
 const DatabaseError = require("./Errors/databaseError.error");
+const { PortNotFreeError, ServerRunError } = require("./Errors/server.error");
 
 mongoose
   .connect(process.env.MONGO_DB_URL)
@@ -63,7 +64,8 @@ app.use("/auth", RepoRoutes);
 
 app.listen(port, (err) => {
   if (err) {
+    throw new PortNotFreeError(err);
   } else {
-    console.log("server up and running");
+    console.log("Server up and running");
   }
 });
