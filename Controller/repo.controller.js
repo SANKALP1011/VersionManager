@@ -1,6 +1,9 @@
 const Repository = require("../Model/UserRepo.Model");
 const User = require("../Model/User.model");
-const { getUserRepo } = require("../Github Service/repo.service");
+const {
+  getUserRepo,
+  getListOfPullRequestforRepo,
+} = require("../Github Service/repo.service");
 const { UserNotFoundError } = require("../Errors/userAuth.error");
 const {
   FailtoFetchSingleRepoByName,
@@ -69,7 +72,7 @@ module.exports = {
       const userRepoDocument = await Repository.findOne({ userId: userId });
       if (!userRepoDocument) {
         throw new FetchToFailRepositoriesError(
-          "Failed to fetch the user repository"
+          "Failed to fetch the user repository collection"
         );
       }
       const repo = userRepoDocument.repositories.find(
@@ -77,7 +80,7 @@ module.exports = {
       );
       if (!repo) {
         throw new FailtoFetchSingleRepoByName(
-          "This repository does not exists"
+          `This repository by the name ${name} does not exists`
         );
       }
       return res.status(200).json(repo);
@@ -90,6 +93,12 @@ module.exports = {
       }
     }
   },
-  getRepositoryPullRequest: async (req, res) => {},
+  getRepositoryPullRequest: async (req, res) => {
+    const userId = req.query.id;
+    const repoName = req.query.repoName;
+    try {
+      const user = await User.findById(userId);
+    } catch (err) {}
+  },
   getRepositoryTopic: async (req, res) => {},
 };

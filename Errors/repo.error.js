@@ -17,14 +17,18 @@ class FailtoFetchSingleRepoByName extends CustomApiErrors {
 }
 
 class FailedToGetRepoReadme extends CustomApiErrors {
-  constructor(message, code) {
-    super(message, code);
+  constructor(message) {
+    super(message);
+    this.name = "FailedToGetRepoReadme";
+    this.statusCode = 404;
   }
 }
 
 class FailedToFetchRepoFromDatabase extends CustomApiErrors {
-  constructor(message, code) {
-    super(message, code);
+  constructor(message) {
+    super(message);
+    this.name = "FailedToFetchRepoFromDatabase";
+    this.statusCode = 404;
   }
 }
 
