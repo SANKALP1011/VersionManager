@@ -19,10 +19,10 @@ module.exports = {
       throw new FailedToFetchReposfromGithub(err.message);
     }
   },
-  getListOfPullRequestforRepo: async (owner, reponame) => {
+  getListOfClosedPullRequestforRepo: async (owner, reponame) => {
     try {
       const response = await axios.default.get(
-        `${GITHUB_BASE_URL}/repos/${owner}/${reponame}/pulls`
+        `${GITHUB_BASE_URL}/repos/${owner}/${reponame}/pulls?state=closed`
       );
       return response.data;
     } catch (err) {

@@ -2,7 +2,7 @@ const Repository = require("../Model/UserRepo.Model");
 const User = require("../Model/User.model");
 const {
   getUserRepo,
-  getListOfPullRequestforRepo,
+  getListOfClosedPullRequestforRepo,
 } = require("../Github Service/repo.service");
 const { UserNotFoundError } = require("../Errors/userAuth.error");
 const {
@@ -98,7 +98,14 @@ module.exports = {
     const repoName = req.query.repoName;
     try {
       const user = await User.findById(userId);
-    } catch (err) {}
+      const response = await getListOfClosedPullRequestforRepo(
+        user.GithubUserName,
+        repoName
+      );
+      console.log(response);
+    } catch (err) {
+      console.log(err);
+    }
   },
   getRepositoryTopic: async (req, res) => {},
 };
