@@ -1,5 +1,6 @@
 const Repository = require("../Model/UserRepo.Model");
 const User = require("../Model/User.model");
+const PullRequest = require("../Model/UserPullRequest.model");
 const {
   getUserRepo,
   getListOfClosedPullRequestforRepo,
@@ -98,10 +99,18 @@ module.exports = {
     const repoName = req.query.repoName;
     try {
       const user = await User.findById(userId);
+      if (!user) {
+        throw new UserNotFoundError(`This user does not exists`);
+      }
       const response = await getListOfClosedPullRequestforRepo(
         user.GithubUserName,
         repoName
       );
+      const pullRequest = {
+        user: userId,
+        repository: user.GithubRepoId,
+      };
+      // to do
       console.log(response);
     } catch (err) {
       console.log(err);

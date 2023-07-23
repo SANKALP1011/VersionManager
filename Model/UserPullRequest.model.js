@@ -13,11 +13,6 @@ const UserRepositoryPullRequestSchema = new mongoose.Schema({
   },
   pullRequest: [
     {
-      pullRequestId: {
-        type: mongoose.Schema.Types.ObjectId,
-        required: true,
-        unique: true,
-      },
       isOpen: {
         type: String,
         default: "",
