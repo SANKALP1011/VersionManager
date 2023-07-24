@@ -9,7 +9,11 @@ const { UserNotFoundError } = require("../Errors/userAuth.error");
 const {
   FailtoFetchSingleRepoByName,
   FetchToFailRepositoriesError,
+  FailedToFecthPullRequestResponse,
 } = require("../Errors/repo.error");
+const {
+  FailedToSaveDocumentToDatabase,
+} = require("../Errors/databaseError.error");
 
 module.exports = {
   getUserRepository: async (req, res) => {
@@ -106,15 +110,75 @@ module.exports = {
         user.GithubUserName,
         repoName
       );
-      const pullRequest = {
+      if (!Array.isArray(response)) {
+        throw new FailedToFecthPullRequestResponse(
+          `Failed to get the pull request from the github service for the repository ${repoName}`
+        );
+      }
+
+      if (response.length === 0) {
+        return res
+          .status(200)
+          .json(
+            `No Pull Request exists for the repository with the name ${repoName}`
+          );
+      }
+
+      const pullRequestData = {
         user: userId,
         repository: user.GithubRepoId,
+        pullRequest: [],
       };
-      // to do
-      console.log(response);
+
+      for (const pullRequest of response) {
+        pullRequestData.pullRequest.push({
+          isOpen: false,
+          title: pullRequest.title,
+          description: pullRequest.description,
+          createdAt: pullRequest.createdAt,
+        });
+      }
+
+      const newPullRequest = new PullRequest(pullRequestData);
+      await newPullRequest.save();
+
+      if (newPullRequest.errors) {
+        throw new FailedToSaveDocumentToDatabase(
+          "There was issue while saving this docmunet to the database"
+        );
+      }
+
+      await User.findByIdAndUpdate(
+        userId,
+        {
+          GithubPullRequest: newPullRequest._id,
+        },
+        { new: true }
+      );
+
+      await Repository.findById(user.GithubRepoId, {
+        pullRequestId: newPullRequest._id,
+      });
+
+      return res.status(200).json(newPullRequest);
     } catch (err) {
-      console.log(err);
+      if (
+        err instanceof UserNotFoundError ||
+        err instanceof FailedToFecthPullRequestResponse ||
+        err instanceof FailedToSaveDocumentToDatabase
+      ) {
+        return res.status(err.statusCode).json(err);
+      }
     }
   },
   getRepositoryTopic: async (req, res) => {},
 };
+
+// get pr ,  user passes name and id , we get the pr for that repo name , now we have to make sure that when user fetched
+// pull request they would peroform the followinng checks -:
+/*
+check 1 - check if the document associcauted with the repo pr alreday exists
+        - if yes , update that specifc document 
+        - else create a new document
+
+*/

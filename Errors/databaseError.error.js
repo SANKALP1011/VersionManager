@@ -6,4 +6,12 @@ class DatabaseError extends CustomApiErrors {
   }
 }
 
-module.exports = DatabaseError;
+class FailedToSaveDocumentToDatabase extends CustomApiErrors {
+  constructor(message) {
+    super(message);
+    this.name = "FailedToSaveDocumentToDatabase";
+    this.statusCode = 404;
+  }
+}
+
+module.exports = { DatabaseError, FailedToSaveDocumentToDatabase };

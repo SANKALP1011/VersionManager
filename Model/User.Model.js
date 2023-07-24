@@ -53,15 +53,14 @@ const UserSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "UserRepo",
     unique: true,
+    default: "",
   },
-  GithubPullRequest: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "pullrequest",
-      unique: true,
-      default: "",
-    },
-  ],
+  GithubPullRequest: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "pullrequest",
+    unique: true,
+    default: "",
+  },
 });
 
 module.exports = mongoose.model("user", UserSchema);

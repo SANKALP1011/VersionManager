@@ -32,9 +32,18 @@ class FailedToFetchRepoFromDatabase extends CustomApiErrors {
   }
 }
 
+class FailedToFecthPullRequestResponse extends CustomApiErrors {
+  constructor(message) {
+    super(message);
+    this.name = "FailedToFecthPullRequestResponse";
+    this.statusCode = 404;
+  }
+}
+
 module.exports = {
   FetchToFailRepositoriesError,
   FailedToFetchRepoFromDatabase,
   FailedToGetRepoReadme,
   FailtoFetchSingleRepoByName,
+  FailedToFecthPullRequestResponse,
 };

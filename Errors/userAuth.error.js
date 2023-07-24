@@ -1,20 +1,26 @@
 const CustomApiErrors = require("../Errors/customApi.error");
 
 class UserNotFoundError extends CustomApiErrors {
-  constructor(message, code) {
-    super(message, code);
+  constructor(message) {
+    super(message);
+    this.name = "UserNotFoundError";
+    this.statusCode = 404;
   }
 }
 
 class UserSignUpError extends CustomApiErrors {
-  constructor(message, code) {
-    super(message, code);
+  constructor(message) {
+    super(message);
+    this.name = "UserSignUpError";
+    this.statusCode = 404;
   }
 }
 
 class UserGithubOauthError extends CustomApiErrors {
-  constructor(message, code) {
-    super(message, code);
+  constructor(message) {
+    super(message);
+    this.name = "UserGithubOauthError";
+    this.statusCode = 404;
   }
 }
 

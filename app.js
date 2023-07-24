@@ -14,7 +14,7 @@ const RepoRoutes = require("./Routes/Repository/repos.routes");
 const key = require("./Config/keys.config");
 const port = process.env.PORT || "3004";
 require("dotenv").config({ path: require("find-config")(".env") });
-const DatabaseError = require("./Errors/databaseError.error");
+const { DatabaseError } = require("./Errors/databaseError.error");
 const { PortNotFreeError, ServerRunError } = require("./Errors/server.error");
 
 mongoose
