@@ -11,6 +11,10 @@ const UserRepositoryPullRequestSchema = new mongoose.Schema({
     ref: "repo",
     required: true,
   },
+  repoName: {
+    type: String,
+    default: "",
+  },
   pullRequest: [
     {
       isOpen: {

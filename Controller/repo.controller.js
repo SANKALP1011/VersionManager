@@ -104,15 +104,17 @@ module.exports = {
     try {
       const user = await User.findById(userId);
       if (!user) {
-        throw new UserNotFoundError(`This user does not exists`);
+        throw new UserNotFoundError(`This user does not exist`);
       }
+
       const response = await getListOfClosedPullRequestforRepo(
         user.GithubUserName,
         repoName
       );
+
       if (!Array.isArray(response)) {
         throw new FailedToFecthPullRequestResponse(
-          `Failed to get the pull request from the github service for the repository ${repoName}`
+          `Failed to get the pull request from the GitHub service for the repository ${repoName}`
         );
       }
 
@@ -124,9 +126,16 @@ module.exports = {
           );
       }
 
+      // Conditional check to see if the pull request documnet of the particular user already exists
+
+      let checkIfRepoPRDocumentExists = await PullRequest.findOne({
+        repoName: repoName,
+      });
+
       const pullRequestData = {
         user: userId,
         repository: user.GithubRepoId,
+        repoName: repoName,
         pullRequest: [],
       };
 
@@ -139,28 +148,48 @@ module.exports = {
         });
       }
 
-      const newPullRequest = new PullRequest(pullRequestData);
-      await newPullRequest.save();
+      // Saving the data to the document based on the above condition
 
-      if (newPullRequest.errors) {
-        throw new FailedToSaveDocumentToDatabase(
-          "There was issue while saving this docmunet to the database"
+      if (checkIfRepoPRDocumentExists) {
+        checkIfRepoPRDocumentExists.pullRequest = pullRequestData.pullRequest;
+        await checkIfRepoPRDocumentExists.save();
+        await User.findByIdAndUpdate(
+          userId,
+          {
+            GithubPullRequest: checkIfRepoPRDocumentExists._id,
+          },
+          { new: true }
         );
+
+        await Repository.findByIdAndUpdate(
+          user.GithubRepoId,
+          {
+            $addToSet: { pullRequestId: checkIfRepoPRDocumentExists._id },
+          },
+          { new: true }
+        );
+        return res.status(200).json(pullRequestData);
+      } else {
+        const newPullRequest = new PullRequest(pullRequestData);
+        await newPullRequest.save();
+        await User.findByIdAndUpdate(
+          userId,
+          {
+            GithubPullRequest: newPullRequest._id,
+          },
+          { new: true }
+        );
+
+        await Repository.findByIdAndUpdate(
+          user.GithubRepoId,
+          {
+            $addToSet: { pullRequestId: newPullRequest._id },
+          },
+          { new: true }
+        );
+
+        return res.status(200).json(newPullRequest);
       }
-
-      await User.findByIdAndUpdate(
-        userId,
-        {
-          GithubPullRequest: newPullRequest._id,
-        },
-        { new: true }
-      );
-
-      await Repository.findById(user.GithubRepoId, {
-        pullRequestId: newPullRequest._id,
-      });
-
-      return res.status(200).json(newPullRequest);
     } catch (err) {
       if (
         err instanceof UserNotFoundError ||
@@ -171,6 +200,7 @@ module.exports = {
       }
     }
   },
+
   getRepositoryTopic: async (req, res) => {},
 };
 
