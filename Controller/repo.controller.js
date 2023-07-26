@@ -200,8 +200,55 @@ module.exports = {
       }
     }
   },
+  getRepositoryTopic: async (req, res) => {
+    const userId = req.query.id;
+    const repoName = req.query.repoName;
+    try {
+      const user = await User.findById(userId);
+      if (!user) {
+        throw new UserNotFoundError(
+          "This user does not exist, try signing up with this profile."
+        );
+      }
 
-  getRepositoryTopic: async (req, res) => {},
+      const userRepositoryCollection = await Repository.findById(
+        user.GithubRepoId
+      );
+      if (!userRepositoryCollection) {
+        throw new FetchToFailRepositoriesError(
+          "There is no repository collection associated with the user"
+        );
+      }
+
+      // Use the find method on the repositories array to get the repository by name
+      const repoByName = userRepositoryCollection.repositories.find(
+        (repo) => repo.name === repoName
+      );
+      if (!repoByName) {
+        throw new FailtoFetchSingleRepoByName(
+          `No repository exists with the following name ${repoName}`
+        );
+      }
+
+      // Assuming repo_topics is an array property of the repository object
+      repoByName.repo_topics.forEach((value) => {
+        console.log(value);
+      });
+
+      // You can send the topics back in the response if needed
+      res.status(200).json({ topics: repoByName.repo_topics });
+    } catch (err) {
+      if (
+        err instanceof UserNotFoundError ||
+        err instanceof FailtoFetchSingleRepoByName ||
+        err instanceof FetchToFailRepositoriesError
+      ) {
+        res.status(err.statusCode).json({
+          error: err,
+        });
+      }
+    }
+  },
 };
 
 // get pr ,  user passes name and id , we get the pr for that repo name , now we have to make sure that when user fetched
