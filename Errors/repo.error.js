@@ -40,10 +40,19 @@ class FailedToFecthPullRequestResponse extends CustomApiErrors {
   }
 }
 
+class FailedToFetchRepositoryLanguages extends CustomApiErrors {
+  constructor(message) {
+    super(message);
+    this.name = "FailedToFetchRepositoryLanguages";
+    this.statusCode = 404;
+  }
+}
+
 module.exports = {
   FetchToFailRepositoriesError,
   FailedToFetchRepoFromDatabase,
   FailedToGetRepoReadme,
   FailtoFetchSingleRepoByName,
   FailedToFecthPullRequestResponse,
+  FailedToFetchRepositoryLanguages,
 };

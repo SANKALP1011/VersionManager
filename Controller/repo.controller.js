@@ -4,12 +4,14 @@ const PullRequest = require("../Model/UserPullRequest.model");
 const {
   getUserRepo,
   getListOfClosedPullRequestforRepo,
+  getRepositoryBuildLang,
 } = require("../Github Service/repo.service");
 const { UserNotFoundError } = require("../Errors/userAuth.error");
 const {
   FailtoFetchSingleRepoByName,
   FetchToFailRepositoriesError,
   FailedToFecthPullRequestResponse,
+  FailedToFetchRepositoryLanguages,
 } = require("../Errors/repo.error");
 const {
   FailedToSaveDocumentToDatabase,
@@ -220,7 +222,8 @@ module.exports = {
         );
       }
 
-      // Use the find method on the repositories array to get the repository by name
+      // Getting single repo from the repository collection by using repo name
+
       const repoByName = userRepositoryCollection.repositories.find(
         (repo) => repo.name === repoName
       );
@@ -229,13 +232,6 @@ module.exports = {
           `No repository exists with the following name ${repoName}`
         );
       }
-
-      // Assuming repo_topics is an array property of the repository object
-      repoByName.repo_topics.forEach((value) => {
-        console.log(value);
-      });
-
-      // You can send the topics back in the response if needed
       res.status(200).json({ topics: repoByName.repo_topics });
     } catch (err) {
       if (
@@ -243,19 +239,40 @@ module.exports = {
         err instanceof FailtoFetchSingleRepoByName ||
         err instanceof FetchToFailRepositoriesError
       ) {
-        res.status(err.statusCode).json({
-          error: err,
-        });
+        res.status(err.statusCode).json(err);
+      }
+    }
+  },
+  getRepositoryLanguages: async (req, res) => {
+    const userId = req.query.id;
+    const repoName = req.query.repoName;
+    try {
+      const user = await User.findById(userId);
+      if (!user) {
+        throw new UserNotFoundError("T");
+      }
+      if (!user) {
+        throw new UserNotFoundError(
+          "This user does not exist, try signing up with this profile."
+        );
+      }
+      const builtLanguages = await getRepositoryBuildLang(
+        user.GithubUserName,
+        repoName
+      );
+      if (!builtLanguages) {
+        throw new FailedToFetchRepositoryLanguages(
+          `Unable to fetch language for the repository with the name ${repoName}`
+        );
+      }
+      return res.status(200).json(builtLanguages);
+    } catch (err) {
+      if (
+        err instanceof UserNotFoundError ||
+        err instanceof FailedToFetchRepositoryLanguages
+      ) {
+        return res.status(err.statusCode).json(err);
       }
     }
   },
 };
-
-// get pr ,  user passes name and id , we get the pr for that repo name , now we have to make sure that when user fetched
-// pull request they would peroform the followinng checks -:
-/*
-check 1 - check if the document associcauted with the repo pr alreday exists
-        - if yes , update that specifc document 
-        - else create a new document
-
-*/
