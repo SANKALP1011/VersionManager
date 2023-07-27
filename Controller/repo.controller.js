@@ -5,6 +5,7 @@ const {
   getUserRepo,
   getListOfClosedPullRequestforRepo,
   getRepositoryBuildLang,
+  getRepositoryBranches,
 } = require("../Github Service/repo.service");
 const { UserNotFoundError } = require("../Errors/userAuth.error");
 const {
@@ -100,7 +101,7 @@ module.exports = {
       }
     }
   },
-  getRepositoryPullRequest: async (req, res) => {
+  getRepositoryClosedPullRequest: async (req, res) => {
     const userId = req.query.id;
     const repoName = req.query.repoName;
     try {
@@ -275,4 +276,24 @@ module.exports = {
       }
     }
   },
+  getRepositoryBranchList: async (req, res) => {
+    const userId = req.query.id;
+    const repoName = req.query.repoName;
+    try {
+      const user = await User.findById(userId);
+      const repositoryDocument = await Repository.findById(user.GithubRepoId);
+      const response = await getRepositoryBranches(
+        user.GithubUserName,
+        repoName
+      );
+      var repo = repositoryDocument.repositories.find(
+        (repo) => repo.name === repoName
+      );
+    } catch (err) {
+      console.log(err);
+    }
+  },
 };
+// get the repo by using the repos id associtaed with the user
+// find the repo by name
+// update the repo branch by iterating over it
