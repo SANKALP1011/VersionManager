@@ -13,6 +13,7 @@ const {
   FetchToFailRepositoriesError,
   FailedToFecthPullRequestResponse,
   FailedToFetchRepositoryLanguages,
+  FailedToGetRepoistoryBranchs,
 } = require("../Errors/repo.error");
 const {
   FailedToSaveDocumentToDatabase,
@@ -281,19 +282,39 @@ module.exports = {
     const repoName = req.query.repoName;
     try {
       const user = await User.findById(userId);
+      if (!user) {
+        throw new UserNotFoundError(
+          "This user does not exists in our database."
+        );
+      }
       const repositoryDocument = await Repository.findById(user.GithubRepoId);
       const response = await getRepositoryBranches(
         user.GithubUserName,
         repoName
       );
+      if (!Array.isArray(response)) {
+        throw new FailedToGetRepoistoryBranchs(
+          `Unable to fetch the branches for the repository with the name ${repoName}`
+        );
+      }
       var repo = repositoryDocument.repositories.find(
         (repo) => repo.name === repoName
       );
+      response.forEach((branch) => {
+        repo.branches.push({
+          name: branch.name,
+          url: branch.url,
+        });
+      });
+      await repositoryDocument.save();
+      return res.status(200).json(repo.branches);
     } catch (err) {
-      console.log(err);
+      if (
+        err instanceof UserNotFoundError ||
+        err instanceof FailedToGetRepoistoryBranchs
+      ) {
+        return res.status(err.statusCode).json(err);
+      }
     }
   },
 };
-// get the repo by using the repos id associtaed with the user
-// find the repo by name
-// update the repo branch by iterating over it
