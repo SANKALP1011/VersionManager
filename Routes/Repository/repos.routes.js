@@ -7,6 +7,7 @@ const {
   getRepositoryTopic,
   getRepositoryLanguages,
   getRepositoryBranchList,
+  getRepositoryIssue,
 } = require("../../Controller/repo.controller");
 
 ReposRouter.get("/user/repos", getUserRepository);
@@ -18,5 +19,6 @@ ReposRouter.get(
 ReposRouter.get("/user/repos/repo/getRepoTopics", getRepositoryTopic);
 ReposRouter.get("/user/repos/repo/getRepoLang", getRepositoryLanguages);
 ReposRouter.get("/user/repos/repo/getBranches", getRepositoryBranchList);
+ReposRouter.get("/user/repos/repo/getIssues", getRepositoryIssue);
 
 module.exports = ReposRouter;

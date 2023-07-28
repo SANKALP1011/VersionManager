@@ -2,10 +2,16 @@ const Repository = require("../Model/UserRepo.Model");
 const User = require("../Model/User.model");
 const PullRequest = require("../Model/UserPullRequest.model");
 const {
+  getUserHelper,
+  getRepositoryHelper,
+  getPullRequestHelper,
+} = require("../Helpers/Database Helpers/database.helper");
+const {
   getUserRepo,
   getListOfClosedPullRequestforRepo,
   getRepositoryBuildLang,
   getRepositoryBranches,
+  getRepostoryIssues,
 } = require("../Github Service/repo.service");
 const { UserNotFoundError } = require("../Errors/userAuth.error");
 const {
@@ -315,6 +321,35 @@ module.exports = {
       ) {
         return res.status(err.statusCode).json(err);
       }
+    }
+  },
+  getRepositoryIssue: async (req, res) => {
+    const userId = req.query.id;
+    const repoName = req.query.repoName;
+    const state = req.query.state;
+    try {
+      const user = await getUserHelper(userId);
+      const repositories = await getRepositoryHelper(user.GithubRepoId);
+      const response = await getRepostoryIssues(
+        user.GithubUserName,
+        repoName,
+        state
+      );
+      var repo = repositories.repositories.find((repo) => {
+        repo.name === repoName;
+      });
+      if (state === "closed") {
+        repo.closedIssueCount = response.length;
+        await repositories.save();
+        return res.status(200).json(response.length);
+      }
+      if (state === "open") {
+        repo.openIssuesCount = response.length;
+        await repositories.save();
+        return res.status(200).json(response.length);
+      }
+    } catch (err) {
+      console.log(err);
     }
   },
 };

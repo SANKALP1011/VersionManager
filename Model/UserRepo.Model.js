@@ -58,6 +58,10 @@ const UserRepoSchema = new mongoose.Schema({
         type: Number,
         default: 0,
       },
+      closedIssueCount: {
+        type: Number,
+        default: 0,
+      },
       repo_topics: {
         type: [String],
         default: [],

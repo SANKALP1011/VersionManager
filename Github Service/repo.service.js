@@ -50,4 +50,14 @@ module.exports = {
       throw new FailedToFetchRepositoryBranch("ISSSSUEE");
     }
   },
+  getRepostoryIssues: async (owner, repoName, state) => {
+    try {
+      const response = await axios.default.get(
+        `${GITHUB_BASE_URL}/repos/${owner}/${repoName}/issues?state=${state}`
+      );
+      return response.data;
+    } catch (err) {
+      console.log(err);
+    }
+  },
 };
