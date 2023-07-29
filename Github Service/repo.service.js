@@ -61,4 +61,9 @@ module.exports = {
       throw new FailedToFetchRespositoryIssues(err);
     }
   },
+  getRepositoryReadme: async (owner, repoName) => {
+    try {
+      const response = await axios.default.get()
+    } catch (err) {}
+  },
 };

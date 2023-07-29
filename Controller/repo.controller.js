@@ -368,4 +368,11 @@ module.exports = {
       }
     }
   },
+  getRepositoryReadmeContent: async (req, res) => {
+    const userId = req.query.id;
+    const repoName = req.query.repoName;
+    try {
+    } catch (err) {}
+  },
+  getRepositoryCommits: async (req, res) => {},
 };
