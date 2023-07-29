@@ -56,6 +56,14 @@ class FailedToGetRepoistoryBranchs extends CustomApiErrors {
   }
 }
 
+class FailedToFetchtRepositoryIssues extends CustomApiErrors {
+  constructor(message) {
+    super(message);
+    this.name = "FailedToFetchtRepositoryIssues";
+    this.statusCode = 404;
+  }
+}
+
 module.exports = {
   FetchToFailRepositoriesError,
   FailedToFetchRepoFromDatabase,
@@ -64,4 +72,5 @@ module.exports = {
   FailedToFecthPullRequestResponse,
   FailedToFetchRepositoryLanguages,
   FailedToGetRepoistoryBranchs,
+  FailedToFetchtRepositoryIssues,
 };

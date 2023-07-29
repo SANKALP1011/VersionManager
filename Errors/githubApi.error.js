@@ -24,8 +24,17 @@ class FailedToFetchRepositoryBranch extends CustomApiErrors {
   }
 }
 
+class FailedToFetchRespositoryIssues extends CustomApiErrors {
+  constructor(message) {
+    super(message);
+    this.name = "FailedToFetchRespositoryIssues";
+    this.statusCode = 404;
+  }
+}
+
 module.exports = {
   FailedToFetchReposfromGithub,
   FailedToGetRepoPullRequest,
   FailedToFetchRepositoryBranch,
+  FailedToFetchRespositoryIssues,
 };

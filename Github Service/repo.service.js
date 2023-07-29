@@ -4,6 +4,7 @@ const {
   FailedToFetchReposfromGithub,
   FailedToGetRepoPullRequest,
   FailedToFetchRepositoryBranch,
+  FailedToFetchRespositoryIssues,
 } = require("../Errors/githubApi.error");
 const tok = "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";
 
@@ -57,7 +58,7 @@ module.exports = {
       );
       return response.data;
     } catch (err) {
-      console.log(err);
+      throw new FailedToFetchRespositoryIssues(err);
     }
   },
 };

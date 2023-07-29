@@ -20,6 +20,7 @@ const {
   FailedToFecthPullRequestResponse,
   FailedToFetchRepositoryLanguages,
   FailedToGetRepoistoryBranchs,
+  FailedToFetchtRepositoryIssues,
 } = require("../Errors/repo.error");
 const {
   FailedToSaveDocumentToDatabase,
@@ -329,7 +330,17 @@ module.exports = {
     const state = req.query.state;
     try {
       const user = await getUserHelper(userId);
+      if (!user) {
+        throw new UserNotFoundError(
+          "This user does not exists in our databasee"
+        );
+      }
       const repositories = await getRepositoryHelper(user.GithubRepoId);
+      if (!Array.isArray(repositories)) {
+        throw new FailedToFetchtRepositoryIssues(
+          `Unable to get the issues for the repository with the name ${repoName}`
+        );
+      }
       const response = await getRepostoryIssues(
         user.GithubUserName,
         repoName,
@@ -349,7 +360,12 @@ module.exports = {
         return res.status(200).json(response.length);
       }
     } catch (err) {
-      console.log(err);
+      if (
+        err instanceof UserNotFoundError ||
+        err instanceof FailedToFetchtRepositoryIssues
+      ) {
+        return res.status(err.statusCode).message(err);
+      }
     }
   },
 };
