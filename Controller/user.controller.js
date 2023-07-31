@@ -25,7 +25,4 @@ module.exports = {
       }
     }
   },
-  getGithubRepo: async (req, res) => {},
-  getOpenPullRequest: async (req, res) => {},
-  getStattisticalAnalysis: async (req, res) => {},
 };
