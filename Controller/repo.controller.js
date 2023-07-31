@@ -12,6 +12,7 @@ const {
   getRepositoryBuildLang,
   getRepositoryBranches,
   getRepostoryIssues,
+  getRepositoryCommits,
 } = require("../Github Service/repo.service");
 const { UserNotFoundError } = require("../Errors/userAuth.error");
 const {
@@ -25,6 +26,7 @@ const {
 const {
   FailedToSaveDocumentToDatabase,
 } = require("../Errors/databaseError.error");
+const { json } = require("express");
 
 module.exports = {
   getUserRepository: async (req, res) => {
@@ -369,10 +371,35 @@ module.exports = {
     }
   },
   getRepositoryReadmeContent: async (req, res) => {
+    // THERE IS AN ISSUE HERE WITH THE GITHUB README CONTENT , NOT ABLE TO GENERATE THE RAW CONTENT FOR GITHUB README
+    // WORK ON THIS CONTROLLER WHEN YOU ARE ABLE TO FIND THE EXACT REASON WHY I AM NOT ABLE TO GET THE README CONTENT
     const userId = req.query.id;
     const repoName = req.query.repoName;
     try {
     } catch (err) {}
   },
-  getRepositoryCommits: async (req, res) => {},
+  getRepositoryCommits: async (req, res) => {
+    const userId = req.query.id;
+    const repoName = req.query.repoName;
+    try {
+      const user = await User.findById(userId);
+      const repositporyDocumet = await Repository.findById(user.GithubRepoId);
+      const repo = repositporyDocumet.repositories.find(
+        (repo) => repo.name === repoName
+      );
+      const response = await getRepositoryCommits(
+        user.GithubUserName,
+        repoName
+      );
+      response.forEach((value) => {
+        repo.commit_history.push({
+          author_Namae: value.commit.author.name,
+          author_commit_message: value.commit.message,
+          commit_Date: value.commit.author.date,
+        });
+      });
+      await repositporyDocumet.save();
+      return res.status(200).json(repo.commit_history);
+    } catch (err) {}
+  },
 };

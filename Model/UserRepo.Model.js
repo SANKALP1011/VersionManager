@@ -92,6 +92,10 @@ const UserRepoSchema = new mongoose.Schema({
             type: String,
             default: "",
           },
+          commit_Date: {
+            type: Date,
+            default: Date.now,
+          },
         },
       ],
       repo_readme_content: {

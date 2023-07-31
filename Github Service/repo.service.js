@@ -5,6 +5,7 @@ const {
   FailedToGetRepoPullRequest,
   FailedToFetchRepositoryBranch,
   FailedToFetchRespositoryIssues,
+  FailedToFetchRespoistoryCommitsList,
 } = require("../Errors/githubApi.error");
 const tok = "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";
 
@@ -61,9 +62,19 @@ module.exports = {
       throw new FailedToFetchRespositoryIssues(err);
     }
   },
-  getRepositoryReadme: async (owner, repoName) => {
+  getRepositoryCommits: async (owner, repoName) => {
     try {
-      const response = await axios.default.get()
-    } catch (err) {}
+      const response = await axios.default.get(
+        `${GITHUB_BASE_URL}/repos/${owner}/${repoName}/commits`
+      );
+      return response.data;
+    } catch (err) {
+      throw new FailedToFetchRespoistoryCommitsList(err);
+    }
   },
+  // getRepositoryReadme: async (owner, repoName) => {
+  //   try {
+  //     const response = await axios.default.get();
+  //   } catch (err) {}
+  // },
 };

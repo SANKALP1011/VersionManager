@@ -32,9 +32,18 @@ class FailedToFetchRespositoryIssues extends CustomApiErrors {
   }
 }
 
+class FailedToFetchRespoistoryCommitsList extends CustomApiErrors {
+  constructor(message) {
+    super(message);
+    this.name = "FailedToFetchRespoistoryCommitsList";
+    this.statusCode = 404;
+  }
+}
+
 module.exports = {
   FailedToFetchReposfromGithub,
   FailedToGetRepoPullRequest,
   FailedToFetchRepositoryBranch,
   FailedToFetchRespositoryIssues,
+  FailedToFetchRespoistoryCommitsList,
 };
