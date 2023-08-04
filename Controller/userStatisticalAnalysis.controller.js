@@ -8,7 +8,9 @@ const {
 } = require("../Helpers/Job Helpers/profileJob.helper");
 const {
   FailedToPerformFollowerorFollowingCountAnalysis,
+  FailedToPerformFollowwrToFollowingRation,
 } = require("../Errors/analysis.error");
+const { UserNotFoundError } = require("../Errors/userAuth.error");
 
 module.exports = {
   getFollowerCountAnalysis: async (req, res) => {
@@ -50,6 +52,11 @@ module.exports = {
     const userId = req.query.id;
     try {
       const user = await User.findById(userId);
+      if (!user) {
+        throw new UserNotFoundError(
+          "This user does not exists in our database"
+        );
+      }
       var followingCount = user.GitHubFollowing;
       var followerCount = user.GiHubFollowres;
       var num = followingCount;
@@ -60,9 +67,19 @@ module.exports = {
         }
       }
       var ratio = followerCount + ":" + followingCount;
+      if (ratio == 0) {
+        throw new FailedToPerformFollowerorFollowingCountAnalysis(
+          "There is some issye while petforming analysis"
+        );
+      }
       return res.status(200).json({ FollowerToFollowingRation: ratio });
     } catch (err) {
-      console.log(err);
+      if (
+        err instanceof UserNotFoundError ||
+        err instanceof FailedToPerformFollowerorFollowingCountAnalysis
+      ) {
+        return res.status(err.statusCode).json(err);
+      }
     }
   },
   getNumberOfPublicRepoAnalysis: async (req, res) => {},
