@@ -3,11 +3,13 @@ const {
   getUpdatedFollowerCount,
   getUpdatedFollowingCount,
 } = require("../../Github Service/profile.service");
+const { getUserRepo } = require("../../Github Service/repo.service");
 const { UserNotFoundError } = require("../../Errors/userAuth.error");
 const {
   FailedToFetchGithubFollowersCounts,
   FailedToFetchGithubFollowingCounts,
 } = require("../../Errors/githubApi.error");
+const { response } = require("express");
 
 module.exports = {
   getUpdatedFollower: async (userId) => {
@@ -21,7 +23,7 @@ module.exports = {
       const response = await getUpdatedFollowerCount(user.GithubUserName);
       if (!Array.isArray(response)) {
         throw new FailedToFetchGithubFollowersCounts(
-          "Unable to fetch the githu  follower count"
+          "Unable to fetch the github follower count"
         );
       }
       const newFollowerCount = response.length;
@@ -103,6 +105,38 @@ module.exports = {
       ) {
         return err;
       }
+    }
+  },
+  getUpdatedUserRepos: async (userId) => {
+    try {
+      const user = await User.findById(userId);
+      const response = await getUserRepo(user.GithubUserName);
+      const newRepoDataLenghth = response.length;
+      let increaseOrDecrease;
+      if (newRepoDataLenghth > user.PublicRepos) {
+        increaseOrDecrease = "increased";
+      } else if (newRepoDataLenghth < user.PublicRepos) {
+        increaseOrDecrease = "decreased";
+      } else {
+        increaseOrDecrease = "no_change";
+      }
+      await User.findByIdAndUpdate(
+        userId,
+        {
+          $set: {
+            PublicRepos: newRepoDataLenghth,
+          },
+        },
+        {
+          $new: true,
+        }
+      );
+      return {
+        RepoCount: newRepoDataLenghth,
+        increaseOrDecrease: increaseOrDecrease,
+      };
+    } catch (err) {
+      return err;
     }
   },
 };

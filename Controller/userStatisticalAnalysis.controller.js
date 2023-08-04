@@ -5,10 +5,12 @@ const { scheduleFollowerUpdateJob } = require("../Scheduler/profile.scheduler");
 const {
   getUpdatedFollower,
   getUpdatedFollowing,
+  getUpdatedUserRepos,
 } = require("../Helpers/Job Helpers/profileJob.helper");
 const {
   FailedToPerformFollowerorFollowingCountAnalysis,
   FailedToPerformFollowwrToFollowingRation,
+  FailedToPerformRepoCountAnalysis,
 } = require("../Errors/analysis.error");
 const { UserNotFoundError } = require("../Errors/userAuth.error");
 
@@ -68,7 +70,7 @@ module.exports = {
       }
       var ratio = followerCount + ":" + followingCount;
       if (ratio == 0) {
-        throw new FailedToPerformFollowerorFollowingCountAnalysis(
+        throw new FailedToPerformFollowwrToFollowingRation(
           "There is some issye while petforming analysis"
         );
       }
@@ -76,13 +78,38 @@ module.exports = {
     } catch (err) {
       if (
         err instanceof UserNotFoundError ||
-        err instanceof FailedToPerformFollowerorFollowingCountAnalysis
+        err instanceof FailedToPerformFollowwrToFollowingRation
       ) {
         return res.status(err.statusCode).json(err);
       }
     }
   },
-  getNumberOfPublicRepoAnalysis: async (req, res) => {},
+  getNumberOfPublicAndPrivateRepoAnalysis: async (req, res) => {
+    const userId = req.query.id;
+    try {
+      const user = await User.findById(userId);
+      if (!user) {
+        throw new UserNotFoundError(
+          "This user does not exists in our database"
+        );
+      }
+      scheduleFollowerUpdateJob(userId);
+      const response = await getUpdatedUserRepos(userId);
+      if (!response) {
+        throw new FailedToPerformRepoCountAnalysis(
+          "There is some issue while performing repo count analysis"
+        );
+      }
+      return res.status(200).json(response);
+    } catch (err) {
+      if (
+        err instanceof UserNotFoundError ||
+        err instanceof FailedToPerformRepoCountAnalysis
+      ) {
+        return res.status(err.statusCode).json(err);
+      }
+    }
+  },
   getNumberOfPrivateRepoAnalysis: async (req, res) => {},
   getPublicToPrivateRepoRationAnalysis: async (req, res) => {},
   getLanguagesUsedAnalysis: async (req, res) => {},

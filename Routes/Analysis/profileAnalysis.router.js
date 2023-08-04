@@ -4,6 +4,7 @@ const {
   getFollowerCountAnalysis,
   getFollowingCountAnalysis,
   getFollowerToFollowingCountAnalysis,
+  getNumberOfPublicAndPrivateRepoAnalysis,
 } = require("../../Controller/userStatisticalAnalysis.controller");
 
 ProfileAnalysisRouter.get(
@@ -17,5 +18,9 @@ ProfileAnalysisRouter.get(
 ProfileAnalysisRouter.get(
   "/user/profileAnalysis/followerToFollowingRatio",
   getFollowerToFollowingCountAnalysis
+);
+ProfileAnalysisRouter.get(
+  "/user/profileAnalysis/repoCountAnalysis",
+  getNumberOfPublicAndPrivateRepoAnalysis
 );
 module.exports = ProfileAnalysisRouter;

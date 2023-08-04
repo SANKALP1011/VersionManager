@@ -16,7 +16,16 @@ class FailedToPerformFollowwrToFollowingRation extends CustomApiErrors {
   }
 }
 
+class FailedToPerformRepoCountAnalysis extends CustomApiErrors {
+  constructor(message) {
+    super(message);
+    this.name = "FailedToPerformRepoCountAnalysis";
+    this.statusCode = 404;
+  }
+}
+
 module.exports = {
   FailedToPerformFollowerorFollowingCountAnalysis,
   FailedToPerformFollowwrToFollowingRation,
+  FailedToPerformRepoCountAnalysis,
 };
