@@ -46,7 +46,25 @@ module.exports = {
       }
     }
   },
-  getFollowerToFollowingCountAnalysis: async (req, res) => {},
+  getFollowerToFollowingCountAnalysis: async (req, res) => {
+    const userId = req.query.id;
+    try {
+      const user = await User.findById(userId);
+      var followingCount = user.GitHubFollowing;
+      var followerCount = user.GiHubFollowres;
+      var num = followingCount;
+      for (num; num > 1; num--) {
+        if (followerCount % num == 0 && followerCount % num == 0) {
+          followerCount = followerCount / num;
+          followingCount = followingCount / num;
+        }
+      }
+      var ratio = followerCount + ":" + followingCount;
+      return res.status(200).json({ FollowerToFollowingRation: ratio });
+    } catch (err) {
+      console.log(err);
+    }
+  },
   getNumberOfPublicRepoAnalysis: async (req, res) => {},
   getNumberOfPrivateRepoAnalysis: async (req, res) => {},
   getPublicToPrivateRepoRationAnalysis: async (req, res) => {},

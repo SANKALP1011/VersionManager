@@ -3,6 +3,7 @@ const ProfileAnalysisRouter = express.Router();
 const {
   getFollowerCountAnalysis,
   getFollowingCountAnalysis,
+  getFollowerToFollowingCountAnalysis,
 } = require("../../Controller/userStatisticalAnalysis.controller");
 
 ProfileAnalysisRouter.get(
@@ -13,5 +14,8 @@ ProfileAnalysisRouter.get(
   "/user/profileAnalysis/followingAnalysis",
   getFollowingCountAnalysis
 );
-
+ProfileAnalysisRouter.get(
+  "/user/profileAnalysis/followerToFollowingRatio",
+  getFollowerToFollowingCountAnalysis
+);
 module.exports = ProfileAnalysisRouter;
