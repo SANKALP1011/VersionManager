@@ -1,6 +1,6 @@
 const CustomApiErrors = require("../Errors/customApi.error");
 
-class FailedToPerformFollowerCountAnalysis extends CustomApiErrors {
+class FailedToPerformFollowerorFollowingCountAnalysis extends CustomApiErrors {
   constructor(message) {
     super(message);
     this.name = "FailedToPerformFollowerCountAnalysis";
@@ -8,4 +8,4 @@ class FailedToPerformFollowerCountAnalysis extends CustomApiErrors {
   }
 }
 
-module.exports = { FailedToPerformFollowerCountAnalysis };
+module.exports = { FailedToPerformFollowerorFollowingCountAnalysis };

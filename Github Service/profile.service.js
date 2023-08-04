@@ -10,6 +10,17 @@ module.exports = {
       return response.data;
     } catch (err) {
       console.log(err);
+      return err;
+    }
+  },
+  getUpdatedFollowingCount: async (userName) => {
+    try {
+      const response = await axios.default.get(
+        `${GITHUB_BASE_URL}/users/${userName}/following`
+      );
+      return response.data;
+    } catch (err) {
+      return err;
     }
   },
 };

@@ -4,7 +4,11 @@ const Repository = require("../Model/UserRepo.Model");
 const { scheduleFollowerUpdateJob } = require("../Scheduler/profile.scheduler");
 const {
   getUpdatedFollower,
+  getUpdatedFollowing,
 } = require("../Helpers/Job Helpers/profileJob.helper");
+const {
+  FailedToPerformFollowerorFollowingCountAnalysis,
+} = require("../Errors/analysis.error");
 
 module.exports = {
   getFollowerCountAnalysis: async (req, res) => {
@@ -13,12 +17,35 @@ module.exports = {
     try {
       scheduleFollowerUpdateJob(userId);
       const response = await getUpdatedFollower(userId);
+      if (!response) {
+        throw new FailedToPerformFollowerorFollowingCountAnalysis(
+          "Unable to perform the analysis on the folloower counts"
+        );
+      }
       return res.status(200).json(response);
     } catch (err) {
-      console.log(err);
+      if (err instanceof FailedToPerformFollowerorFollowingCountAnalysis) {
+        return res.status(err.statusCode).json(err);
+      }
     }
   },
-  getFollowingCountAnalysis: async (req, res) => {},
+  getFollowingCountAnalysis: async (req, res) => {
+    const userId = req.query.id;
+    try {
+      scheduleFollowerUpdateJob(userId);
+      const response = await getUpdatedFollowing(userId);
+      if (!response) {
+        throw new FailedToPerformFollowerorFollowingCountAnalysis(
+          "Unable to perform the analysis on the following counts"
+        );
+      }
+      return res.status(200).json(response);
+    } catch (err) {
+      if (err instanceof FailedToPerformFollowerorFollowingCountAnalysis) {
+        return res.status(err.statusCode).json(err);
+      }
+    }
+  },
   getFollowerToFollowingCountAnalysis: async (req, res) => {},
   getNumberOfPublicRepoAnalysis: async (req, res) => {},
   getNumberOfPrivateRepoAnalysis: async (req, res) => {},
