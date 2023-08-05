@@ -129,15 +129,4 @@ module.exports = {
      }
      */
   },
-  getMostRecentRepositoryCommitAnalysis: async (req, res) => {},
-  getMostUsedTopicAnalysis: async (req, res) => {},
-  getLinesOfCodePushedYearwiseAnalysis: async (req, res) => {},
-  getTotalClosedIssueAnalysis: async (req, res) => {},
-  getTotalOpenIssueAnalysis: async (req, res) => {},
-  getContributionHistoryAnalysis: async (req, res) => {},
-  getTotalPullRequestCountAnalysis: async (req, res) => {},
-  getLanguagesLinesOfCodeAnalysis: async (req, res) => {},
-  getOrganisationCountAnalysis: async (req, res) => {},
-  getTotalStarsAnalysis: async (req, res) => {},
-  getTopRepositoryAnalysis: async (req, res) => {},
 };
