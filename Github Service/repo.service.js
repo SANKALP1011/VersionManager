@@ -1,4 +1,5 @@
 const axios = require("axios");
+require("dotenv").config({ path: require("find-config")(".env") });
 const { GITHUB_BASE_URL } = require("../Utils/baseUrl.util");
 const {
   FailedToFetchReposfromGithub,
@@ -7,9 +8,9 @@ const {
   FailedToFetchRespositoryIssues,
   FailedToFetchRespoistoryCommitsList,
 } = require("../Errors/githubApi.error");
-const tok = "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";
 
-axios.default.defaults.headers.common["Authorization"] = tok;
+axios.default.defaults.headers.common["Authorization"] =
+  process.env.GITHUB_ACCESS_TOKEN;
 
 module.exports = {
   getUserRepo: async (owner) => {
