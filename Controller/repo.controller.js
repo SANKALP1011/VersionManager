@@ -275,16 +275,21 @@ module.exports = {
         );
       }
       var repo = repositoryDocument.repositories.find((repo) => {
-        repo.name === repoName;
+        return repo.name === repoName;
       });
+      if (!repo) {
+        throw new FailtoFetchSingleRepoByName(
+          `Repo with the name ${repoName} does not exits in your profile`
+        );
+      }
       repo.languagesBytesOfCodeUsed = builtLanguages;
-      console.log(repo.languagesBytesOfCodeUsed);
       await repositoryDocument.save();
       return res.status(200).json(repo.languagesBytesOfCodeUsed);
     } catch (err) {
       if (
         err instanceof UserNotFoundError ||
-        err instanceof FailedToFetchRepositoryLanguages
+        err instanceof FailedToFetchRepositoryLanguages ||
+        err instanceof FailtoFetchSingleRepoByName
       ) {
         return res.status(err.statusCode).json(err);
       }
