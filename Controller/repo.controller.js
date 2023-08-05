@@ -259,12 +259,10 @@ module.exports = {
     const repoName = req.query.repoName;
     try {
       const user = await User.findById(userId);
-      if (!user) {
-        throw new UserNotFoundError("T");
-      }
+      const repositoryDocument = await Repository.findById(user.GithubRepoId);
       if (!user) {
         throw new UserNotFoundError(
-          "This user does not exist, try signing up with this profile."
+          "This user does not exists in our database"
         );
       }
       const builtLanguages = await getRepositoryBuildLang(
@@ -276,7 +274,13 @@ module.exports = {
           `Unable to fetch language for the repository with the name ${repoName}`
         );
       }
-      return res.status(200).json(builtLanguages);
+      var repo = repositoryDocument.repositories.find((repo) => {
+        repo.name === repoName;
+      });
+      repo.languagesBytesOfCodeUsed = builtLanguages;
+      console.log(repo.languagesBytesOfCodeUsed);
+      await repositoryDocument.save();
+      return res.status(200).json(repo.languagesBytesOfCodeUsed);
     } catch (err) {
       if (
         err instanceof UserNotFoundError ||

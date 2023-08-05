@@ -110,9 +110,25 @@ module.exports = {
       }
     }
   },
-  getNumberOfPrivateRepoAnalysis: async (req, res) => {},
-  getPublicToPrivateRepoRationAnalysis: async (req, res) => {},
-  getLanguagesUsedAnalysis: async (req, res) => {},
+  getLanguagesUsedAnalysis: async (req, res) => {
+    // get the languages with the number of bytes of code from all the repo's
+    // run over tge response and check for all the name of langauges that is returned from github
+    // the baseed on name , if name is same in all repos then keep on adding the coubt of the langauges for eg-:
+    /*resposne from repo one -: {
+     javascript:140000
+     docker:2
+     },
+     response from repo 2 -:{
+      javascript:150000
+      c++:100
+     }
+     then total count for each langauge would be {
+      javascript:290000
+      docker:2
+      c++:100
+     }
+     */
+  },
   getMostRecentRepositoryCommitAnalysis: async (req, res) => {},
   getMostUsedTopicAnalysis: async (req, res) => {},
   getLinesOfCodePushedYearwiseAnalysis: async (req, res) => {},
