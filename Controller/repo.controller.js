@@ -39,7 +39,7 @@ module.exports = {
         const response = await getUserRepo(user.GithubUserName);
 
         const repositoryData = {
-          userId: user._id,
+          userId: userId,
           repositories: response.map((repo) => ({
             name: repo.name,
             private: repo.private,
@@ -57,7 +57,7 @@ module.exports = {
         };
 
         const data = await Repository.findOneAndUpdate(
-          { userId: user._id },
+          { userId: userId },
           repositoryData,
           {
             upsert: true,
@@ -261,9 +261,7 @@ module.exports = {
       const user = await User.findById(userId);
       const repositoryDocument = await Repository.findById(user.GithubRepoId);
       if (!user) {
-        throw new UserNotFoundError(
-          "This user does not exists in our database"
-        );
+        throw new UserNotFoundError("This user does not exist in our database");
       }
       const builtLanguages = await getRepositoryBuildLang(
         user.GithubUserName,
@@ -271,18 +269,43 @@ module.exports = {
       );
       if (!builtLanguages) {
         throw new FailedToFetchRepositoryLanguages(
-          `Unable to fetch language for the repository with the name ${repoName}`
+          `Unable to fetch languages for the repository with the name ${repoName}`
         );
       }
+
       var repo = repositoryDocument.repositories.find((repo) => {
         return repo.name === repoName;
       });
       if (!repo) {
         throw new FailtoFetchSingleRepoByName(
-          `Repo with the name ${repoName} does not exits in your profile`
+          `Repo with the name ${repoName} does not exist in your profile`
         );
       }
-      repo.languagesBytesOfCodeUsed = builtLanguages;
+
+      // Construct an array of language objects from the fetched language details
+      const languageObject = Object.keys(builtLanguages).map((language) => {
+        return {
+          language: language,
+          bytesOfCode: builtLanguages[language],
+        };
+      });
+
+      console.log(languageObject);
+
+      languageObject.forEach((langObj) => {
+        const index = repo.languagesBytesOfCodeUsed.findIndex(
+          (lang) => lang.language === langObj.language
+        );
+        if (index !== -1) {
+          // Language already exists, update bytesOfCode
+          repo.languagesBytesOfCodeUsed[index].bytesOfCode =
+            langObj.bytesOfCode;
+        } else {
+          // Language does not exist, add new object
+          repo.languagesBytesOfCodeUsed.push(langObj);
+        }
+      });
+
       await repositoryDocument.save();
       return res.status(200).json(repo.languagesBytesOfCodeUsed);
     } catch (err) {

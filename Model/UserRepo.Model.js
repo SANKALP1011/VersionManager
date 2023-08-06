@@ -56,8 +56,14 @@ const UserRepoSchema = new mongoose.Schema({
       },
       languagesBytesOfCodeUsed: [
         {
-          type: Array,
-          default: [],
+          language: {
+            type: String,
+            default: "",
+          },
+          bytesOfCode: {
+            type: Number,
+            default: 0,
+          },
         },
       ],
       openIssuesCount: {

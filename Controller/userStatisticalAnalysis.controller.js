@@ -111,22 +111,28 @@ module.exports = {
     }
   },
   getLanguagesUsedAnalysis: async (req, res) => {
-    // get the languages with the number of bytes of code from all the repo's
-    // run over tge response and check for all the name of langauges that is returned from github
-    // the baseed on name , if name is same in all repos then keep on adding the coubt of the langauges for eg-:
-    /*resposne from repo one -: {
-     javascript:140000
-     docker:2
-     },
-     response from repo 2 -:{
-      javascript:150000
-      c++:100
-     }
-     then total count for each langauge would be {
-      javascript:290000
-      docker:2
-      c++:100
-     }
-     */
+    const userId = req.query.id;
+    try {
+      const user = await User.findById(userId);
+      const repositories = await Repository.findById(user.GithubRepoId);
+      var totalLangaugeByteCounts = {};
+      for (var repo of repositories.repositories) {
+        var repoLangauages = repo.languagesBytesOfCodeUsed;
+        for (const languageData of repoLangauages) {
+          const language = languageData.language;
+
+          const bytesOfCode = languageData.bytesOfCode;
+
+          if (totalLangaugeByteCounts[language]) {
+            totalLangaugeByteCounts[language] += bytesOfCode;
+          } else {
+            totalLangaugeByteCounts[language] = bytesOfCode;
+          }
+        }
+      }
+      return res.status(200).json(totalLangaugeByteCounts);
+    } catch (err) {
+      console.log(err);
+    }
   },
 };
