@@ -6,6 +6,7 @@ const {
   getFollowerToFollowingCountAnalysis,
   getNumberOfPublicAndPrivateRepoAnalysis,
   getLanguagesUsedAnalysis,
+  getMostUsedTopicAnalysis,
 } = require("../../Controller/userStatisticalAnalysis.controller");
 
 ProfileAnalysisRouter.get(
@@ -27,5 +28,9 @@ ProfileAnalysisRouter.get(
 ProfileAnalysisRouter.get(
   "/user/profileAnalysis/tsotalLanguageCountsAnalysi",
   getLanguagesUsedAnalysis
+);
+ProfileAnalysisRouter.get(
+  "/user/profileAnalysis/totalTopicsCounts",
+  getMostUsedTopicAnalysis
 );
 module.exports = ProfileAnalysisRouter;

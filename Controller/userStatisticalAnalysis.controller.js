@@ -135,4 +135,35 @@ module.exports = {
       console.log(err);
     }
   },
+  getMostUsedTopicAnalysis: async (req, res) => {
+    const userId = req.query.id;
+    try {
+      const user = await User.findById(userId);
+      const repositories = await Repository.findById(user.GithubRepoId);
+
+      // Initialize an object to store the topic counts
+      const topicCounts = {};
+
+      // Iterate through each repository
+      for (const repo of repositories.repositories) {
+        const repoTopics = repo.repo_topics;
+
+        // Count the occurrences of each topic
+        for (const topic of repoTopics) {
+          if (topicCounts[topic]) {
+            topicCounts[topic] += 1;
+          } else {
+            topicCounts[topic] = 1;
+          }
+        }
+      }
+
+      return res.status(200).json(topicCounts);
+    } catch (err) {
+      console.error("Error in getMostUsedTopicAnalysis:", err);
+      return res.status(500).json({
+        error: "Internal server error",
+      });
+    }
+  },
 };
