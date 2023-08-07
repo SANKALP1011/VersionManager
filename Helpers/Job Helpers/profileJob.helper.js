@@ -1,9 +1,13 @@
 const User = require("../../Model/User.model");
+const Repository = require("../../Model/UserRepo.Model");
 const {
   getUpdatedFollowerCount,
   getUpdatedFollowingCount,
 } = require("../../Github Service/profile.service");
-const { getUserRepo } = require("../../Github Service/repo.service");
+const {
+  getUserRepo,
+  getRepostoryIssues,
+} = require("../../Github Service/repo.service");
 const { UserNotFoundError } = require("../../Errors/userAuth.error");
 const {
   FailedToFetchGithubFollowersCounts,
@@ -138,5 +142,34 @@ module.exports = {
     } catch (err) {
       return err;
     }
+  },
+  getUpdatedClosedCounts: async (userId) => {
+    try {
+      const user = await User.findById(userId);
+      const repositoryDocument = await Repository.findById(user.GithubRepoId);
+      repositoryDocument.repositories.forEach(async (repo) => {
+        const repoData = repositoryDocument.repositories.find((repoItem) => {
+          return repoItem.name === repo.name;
+        });
+        console.log(repoData.name); // Log the correct repository data
+        var state = "closed";
+        const response = await getRepostoryIssues(
+          user.GithubUserName,
+          repoData.name,
+          state
+        );
+        repoData.closedIssueCount = response.length;
+        await repositoryDocument.save();
+        let data = {
+          repoName: repoData.name,
+          closedIssueCount: repoData.closedIssueCount,
+        };
+        // Do something with the 'data' object if needed.
+      });
+    } catch (err) {
+      console.log(err);
+    }
+
+    // work on this
   },
 };

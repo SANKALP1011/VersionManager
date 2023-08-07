@@ -380,6 +380,7 @@ module.exports = {
         repoName,
         state
       );
+      console.log("wrokinggg till here");
       var repo = repositories.repositories.find((repo) => {
         repo.name === repoName;
       });
@@ -398,7 +399,7 @@ module.exports = {
         err instanceof UserNotFoundError ||
         err instanceof FailedToFetchtRepositoryIssues
       ) {
-        return res.status(err.statusCode).message(err);
+        return res.status(err.statusCode).json(err);
       }
     }
   },
