@@ -158,12 +158,14 @@ module.exports = {
           repoData.name,
           state
         );
-        repoData.closedIssueCount = response.length;
-        await repositoryDocument.save();
         let data = {
           repoName: repoData.name,
           closedIssueCount: repoData.closedIssueCount,
         };
+        console.log(data);
+        repoData.closedIssueCount = response.length;
+        // await repositoryDocument.save();
+
         // Do something with the 'data' object if needed.
       });
     } catch (err) {
