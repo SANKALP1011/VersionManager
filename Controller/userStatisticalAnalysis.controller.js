@@ -140,7 +140,7 @@ module.exports = {
     const userId = req.query.id;
     try {
       const user = await User.findById(userId);
-      await getUpdatedClosedCounts(userId);
+
       const repositories = await Repository.findById(user.GithubRepoId);
 
       // Initialize an object to store the topic counts
@@ -169,14 +169,46 @@ module.exports = {
     }
   },
   getTotalClosedIssueAnalysis: async (req, res) => {
-    // create a job that would be be able to fetch the updated repo closed isssues counts everyday at 12:00 am.
-    // this would be used for kepping the data up to date.
-    // thing would be like the that closed issues would be updated for all the repositories i.e we would iterate through all the repository name
-    // pass the repo name into the getRepoIssue and then update all the issue counts for all that repository.
-    // run that job in the cron task scheduler which would update the issue count evrey day at 12:00 am.
-    // then perform entire analysis over that entire repository documents
     const userId = req.query.id;
     try {
-    } catch (err) {}
+      const user = await User.findById(userId);
+
+      const repositoryDocument = await Repository.findById(user.GithubRepoId);
+      var closedIssueCount = 0;
+      repositoryDocument.repositories.forEach((repo) => {
+        console.log(repo.closedIssueCount);
+        closedIssueCount += repo.closedIssueCount;
+      });
+      return res.status(200).json({
+        ClosedCount: closedIssueCount,
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  },
+  getTotalOpenIssueAnalysis: async (req, res) => {
+    const userId = req.query.id;
+    try {
+      const user = await User.findById(userId);
+      if (!user) {
+        throw new UserNotFoundError(
+          "This user does not exists in our database"
+        );
+      }
+      const repositoryDocument = await Repository.findById(user.GithubRepoId);
+      var openIssueCount = 0;
+      repositoryDocument.repositories.forEach((repo) => {
+        console.log(repo.openIssuesCount);
+        openIssueCount += repo.openIssuesCount;
+      });
+      return res.status(200).json({
+        OpenCount: openIssueCount,
+      });
+    } catch (err) {
+      if (err instanceof UserNotFoundError) {
+        return res.status(err.statusCode).json(err);
+      }
+      return err;
+    }
   },
 };

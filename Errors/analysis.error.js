@@ -24,8 +24,16 @@ class FailedToPerformRepoCountAnalysis extends CustomApiErrors {
   }
 }
 
+class FailedToPerformTopicCountsAnalysis extends CustomApiErrors {
+  constructor(message) {
+    super(message);
+    this.name = "FailedToPerformTopicCountsAnalysis";
+  }
+}
+
 module.exports = {
   FailedToPerformFollowerorFollowingCountAnalysis,
   FailedToPerformFollowwrToFollowingRation,
   FailedToPerformRepoCountAnalysis,
+  FailedToPerformTopicCountsAnalysis,
 };

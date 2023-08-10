@@ -4,6 +4,7 @@ const {
   getUpdatedFollower,
   getUpdatedFollowing,
   getUpdatedUserRepos,
+  getUpdatedClosedCounts,
 } = require("../Helpers/Job Helpers/profileJob.helper");
 
 module.exports = {
@@ -12,6 +13,7 @@ module.exports = {
       await getUpdatedFollower(userId);
       await getUpdatedFollowing(userId);
       await getUpdatedUserRepos(userId);
+      await getUpdatedClosedCounts(userId);
     });
   },
 };

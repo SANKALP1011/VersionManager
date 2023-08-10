@@ -12,8 +12,10 @@ const { UserNotFoundError } = require("../../Errors/userAuth.error");
 const {
   FailedToFetchGithubFollowersCounts,
   FailedToFetchGithubFollowingCounts,
+  FetchToFailRepositoriesError,
 } = require("../../Errors/githubApi.error");
-const { response } = require("express");
+
+const databaseHelper = require("../Database Helpers/database.helper");
 
 module.exports = {
   getUpdatedFollower: async (userId) => {
@@ -146,32 +148,42 @@ module.exports = {
   getUpdatedClosedCounts: async (userId) => {
     try {
       const user = await User.findById(userId);
+      if (!user) {
+        throw new UserNotFoundError(
+          "This user does not exists in our database"
+        );
+      }
       const repositoryDocument = await Repository.findById(user.GithubRepoId);
-      repositoryDocument.repositories.forEach(async (repo) => {
-        const repoData = repositoryDocument.repositories.find((repoItem) => {
-          return repoItem.name === repo.name;
-        });
-        console.log(repoData.name); // Log the correct repository data
-        var state = "closed";
+      if (!repositoryDocument) {
+        throw new FetchToFailRepositoriesError(
+          "Unable to fetch the repository documet from database"
+        );
+      }
+      var data = {};
+      for (const repo of repositoryDocument.repositories) {
+        const state = "closed";
         const response = await getRepostoryIssues(
           user.GithubUserName,
-          repoData.name,
+          repo.name,
           state
         );
-        let data = {
-          repoName: repoData.name,
-          closedIssueCount: repoData.closedIssueCount,
+
+        repo.closedIssueCount = response.length;
+        data = {
+          ClosedIssuesCounts: repo.closedIssueCount,
         };
-        console.log(data);
-        repoData.closedIssueCount = response.length;
-        // await repositoryDocument.save();
+      }
 
-        // Do something with the 'data' object if needed.
-      });
+      await repositoryDocument.save();
+      return res.status(200).json(data);
     } catch (err) {
-      console.log(err);
+      if (
+        err instanceof UserNotFoundError ||
+        err instanceof FetchToFailRepositoriesError
+      ) {
+        return err;
+      }
+      return err;
     }
-
-    // work on this
   },
 };

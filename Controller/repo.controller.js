@@ -365,13 +365,11 @@ module.exports = {
     try {
       const user = await getUserHelper(userId);
       if (!user) {
-        throw new UserNotFoundError(
-          "This user does not exists in our databasee"
-        );
+        throw new UserNotFoundError("This user does not exist in our database");
       }
       const repositories = await getRepositoryHelper(user.GithubRepoId);
-      if (!Array.isArray(repositories)) {
-        throw new FailedToFetchtRepositoryIssues(
+      if (!Array.isArray(repositories.repositories)) {
+        throw new FailedToFetchRepositoryIssues(
           `Unable to get the issues for the repository with the name ${repoName}`
         );
       }
@@ -380,27 +378,31 @@ module.exports = {
         repoName,
         state
       );
-      console.log("wrokinggg till here");
-      var repo = repositories.repositories.find((repo) => {
-        repo.name === repoName;
-      });
+
+      var repo = repositories.repositories.find(
+        (repo) => repo.name === repoName
+      );
       if (state === "closed") {
         repo.closedIssueCount = response.length;
-        await repositories.save();
-        return res.status(200).json(response.length);
       }
       if (state === "open") {
         repo.openIssuesCount = response.length;
-        await repositories.save();
-        return res.status(200).json(response.length);
       }
+
+      // Assuming repositories.save() is the correct method to save changes.
+      await repositories.save();
+
+      return res.status(200).json(response.length);
     } catch (err) {
+      console.log(err);
       if (
         err instanceof UserNotFoundError ||
         err instanceof FailedToFetchtRepositoryIssues
       ) {
         return res.status(err.statusCode).json(err);
       }
+      // Handle other errors with a generic response
+      return res.status(500).json({ error: "An error occurred" });
     }
   },
   getRepositoryReadmeContent: async (req, res) => {

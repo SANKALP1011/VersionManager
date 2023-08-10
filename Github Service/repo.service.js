@@ -58,7 +58,6 @@ module.exports = {
       const response = await axios.default.get(
         `${GITHUB_BASE_URL}/repos/${owner}/${repoName}/issues?state=${state}`
       );
-      console.log(response.data);
       return response.data;
     } catch (err) {
       throw new FailedToFetchRespositoryIssues(err);
