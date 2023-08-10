@@ -8,9 +8,9 @@ const mongoose = require("mongoose");
 const {
   githubController,
 } = require("./Controller/githubStrategies.controller");
-const InitialRoutes = require("./Routes/initial.router");
-const GithubRoutes = require("./Routes/githubAuth.router");
-const ProfileRoutes = require("./Routes/profile.router");
+const InitialRoutes = require("./Routes/Initial/initial.router");
+const GithubRoutes = require("./Routes/Auth/githubAuth.router");
+const ProfileRoutes = require("./Routes/User/profile.router");
 const RepoRoutes = require("./Routes/Repository/repos.routes");
 const ProfileAnalysisRoutes = require("./Routes/Analysis/profileAnalysis.router");
 const key = require("./Config/keys.config");
