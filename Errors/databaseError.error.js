@@ -22,8 +22,17 @@ class FailedToUpdateDocumetInDatabase extends CustomApiErrors {
   }
 }
 
+class FailedToFetchDocumentFromDatabase extends CustomApiErrors {
+  constructor(message) {
+    super(message);
+    this.name = "FailedToFetchDocumentFromDatabase";
+    this.statusCode = 404;
+  }
+}
+
 module.exports = {
   DatabaseError,
   FailedToSaveDocumentToDatabase,
   FailedToUpdateDocumetInDatabase,
+  FailedToFetchDocumentFromDatabase,
 };

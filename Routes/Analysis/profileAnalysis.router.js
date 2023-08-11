@@ -9,6 +9,7 @@ const {
   getMostUsedTopicAnalysis,
   getTotalClosedIssueAnalysis,
   getTotalOpenIssueAnalysis,
+  getNumberOfLinesOfCodePushedAnalysis,
 } = require("../../Controller/userStatisticalAnalysis.controller");
 
 ProfileAnalysisRouter.get(
@@ -42,5 +43,9 @@ ProfileAnalysisRouter.get(
 ProfileAnalysisRouter.get(
   "/user/profileAnalysis/totalOpenIssuesCounts",
   getTotalOpenIssueAnalysis
+);
+ProfileAnalysisRouter.get(
+  "/user/profileAnalysis/totalLinesOfCodePushed",
+  getNumberOfLinesOfCodePushedAnalysis
 );
 module.exports = ProfileAnalysisRouter;
