@@ -7,6 +7,7 @@ const {
   getUpdatedFollowing,
   getUpdatedUserRepos,
   getUpdatedClosedCounts,
+  getUpdatedStarsCounts,
 } = require("../Helpers/Job Helpers/profileJob.helper");
 const {
   FailedToPerformFollowerorFollowingCountAnalysis,
@@ -248,4 +249,22 @@ module.exports = {
       return res.status(500).json(err);
     }
   },
+  getTotalStarsForProfileAnalysis: async (req, res) => {
+    const userId = req.query.id;
+    try {
+      const user = await User.findById(userId);
+
+      const repositoryDocument = await Repository.findById(user.GithubRepoId);
+      var totalStarsCount = 0;
+      repositoryDocument.repositories.forEach((repo) => {
+        totalStarsCount += repo.repoStarsCount;
+      });
+      return res.status(200).json({
+        TotalStarsCount: totalStarsCount,
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  },
+  //get latest and oldest repo name
 };

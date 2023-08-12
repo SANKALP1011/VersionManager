@@ -186,4 +186,32 @@ module.exports = {
       return err;
     }
   },
+  getUpdatedStarsCounts: async (userId) => {
+    try {
+      const user = await User.findById(userId);
+      const repositoryDocument = await Repository.findById(user.GithubRepoId);
+      const response = await getUserRepo(user.GithubUserName);
+      console.log("Response from getUserRepo:", response);
+      const updatedRepositories = await Promise.all(
+        repositoryDocument.repositories.map(async (repo) => {
+          try {
+            response.map((repoData) => {
+              console.log({
+                Stars: repoData.stargazers_count,
+                Repo: repo.repoName,
+              });
+            });
+          } catch (err) {
+            console.error("Error in getUserRepo:", err);
+          }
+        })
+      );
+
+      // Now you can update the repositoryDocument with the updatedRepositories array
+      // repositoryDocument.repositories = updatedRepositories;
+      // await repositoryDocument.save();
+    } catch (err) {
+      console.error(err);
+    }
+  },
 };

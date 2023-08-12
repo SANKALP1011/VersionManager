@@ -73,9 +73,4 @@ module.exports = {
       throw new FailedToFetchRespoistoryCommitsList(err);
     }
   },
-  // getRepositoryReadme: async (owner, repoName) => {
-  //   try {
-  //     const response = await axios.default.get();
-  //   } catch (err) {}
-  // },
 };
