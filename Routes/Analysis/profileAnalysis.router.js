@@ -11,6 +11,7 @@ const {
   getTotalOpenIssueAnalysis,
   getNumberOfLinesOfCodePushedAnalysis,
   getTotalStarsForProfileAnalysis,
+  getNewestAndOldestRepoAnalysis,
 } = require("../../Controller/userStatisticalAnalysis.controller");
 
 ProfileAnalysisRouter.get(
@@ -52,5 +53,9 @@ ProfileAnalysisRouter.get(
 ProfileAnalysisRouter.get(
   "/user/profileAnalysis/totalStarsCounts",
   getTotalStarsForProfileAnalysis
+);
+ProfileAnalysisRouter.get(
+  "/user/profileAnalysis/oldestNewestRepo",
+  getNewestAndOldestRepoAnalysis
 );
 module.exports = ProfileAnalysisRouter;

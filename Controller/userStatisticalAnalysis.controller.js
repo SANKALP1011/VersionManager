@@ -253,8 +253,17 @@ module.exports = {
     const userId = req.query.id;
     try {
       const user = await User.findById(userId);
-
+      if (!user) {
+        throw new UserNotFoundError(
+          "This user does not exists in  our database"
+        );
+      }
       const repositoryDocument = await Repository.findById(user.GithubRepoId);
+      if (!repositoryDocument) {
+        throw new FailedToFetchDocumentFromDatabase(
+          "Unable to fetch the document from the database"
+        );
+      }
       var totalStarsCount = 0;
       repositoryDocument.repositories.forEach((repo) => {
         totalStarsCount += repo.repoStarsCount;
@@ -263,8 +272,62 @@ module.exports = {
         TotalStarsCount: totalStarsCount,
       });
     } catch (err) {
-      console.log(err);
+      if (
+        err instanceof UserNotFoundError ||
+        err instanceof FailedToFetchDocumentFromDatabase
+      ) {
+        return res.status(err.statusCode).json(err);
+      }
+      return res.status(500).json(err);
     }
   },
-  //get latest and oldest repo name
+  getNewestAndOldestRepoAnalysis: async (req, res) => {
+    const userId = req.query.id;
+
+    try {
+      const user = await User.findById(userId);
+
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+
+      const repositoryDocument = await Repository.findById(user.GithubRepoId);
+
+      if (!repositoryDocument) {
+        return res.status(404).json({ message: "Repository not found" });
+      }
+
+      const repositories = repositoryDocument.repositories;
+
+      if (repositories.length === 0) {
+        return res.status(200).json({ message: "No repositories found" });
+      }
+
+      let oldestRepo = null;
+      let newestRepo = null;
+      let oldestAge = Infinity;
+      let newestAge = -Infinity;
+
+      repositories.forEach((repo) => {
+        const repoCreationDate = new Date(repo.dateOfCreation);
+        const ageInMillis = Date.now() - repoCreationDate.getTime();
+        const ageInDays = ageInMillis / (1000 * 60 * 60 * 24);
+
+        if (ageInDays < oldestAge) {
+          oldestAge = ageInDays;
+          oldestRepo = repo;
+        }
+
+        if (ageInDays > newestAge) {
+          newestAge = ageInDays;
+          newestRepo = repo;
+        }
+      });
+
+      res.status(200).json({ oldestRepo, newestRepo });
+    } catch (err) {
+      console.error("Error:", err);
+      res.status(500).json({ message: "Internal server error" });
+    }
+  },
 };
