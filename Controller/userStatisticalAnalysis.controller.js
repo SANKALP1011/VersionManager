@@ -288,13 +288,15 @@ module.exports = {
       const user = await User.findById(userId);
 
       if (!user) {
-        return res.status(404).json({ message: "User not found" });
+        throw new UserNotFoundError("This user does not exist in our database");
       }
 
       const repositoryDocument = await Repository.findById(user.GithubRepoId);
 
       if (!repositoryDocument) {
-        return res.status(404).json({ message: "Repository not found" });
+        throw new FailedToFetchDocumentFromDatabase(
+          "Unable to fetch the repository document from the database"
+        );
       }
 
       const repositories = repositoryDocument.repositories;
@@ -303,30 +305,47 @@ module.exports = {
         return res.status(200).json({ message: "No repositories found" });
       }
 
-      let oldestRepo = null;
-      let newestRepo = null;
-      let oldestAge = Infinity;
-      let newestAge = -Infinity;
+      const currentDate = new Date();
 
-      repositories.forEach((repo) => {
-        const repoCreationDate = new Date(repo.dateOfCreation);
-        const ageInMillis = Date.now() - repoCreationDate.getTime();
-        const ageInDays = ageInMillis / (1000 * 60 * 60 * 24);
+      // Find the oldest and newest repositories based on ageInDays
+      const oldestRepo = repositories.reduce(
+        (oldest, repo) => {
+          const repoCreationDate = new Date(repo.dateOfCreation);
+          const diffInTime = currentDate.getTime() - repoCreationDate.getTime();
+          const ageInDays = Math.trunc(diffInTime / (1000 * 3600 * 24));
 
-        if (ageInDays < oldestAge) {
-          oldestAge = ageInDays;
-          oldestRepo = repo;
-        }
+          if (ageInDays > oldest.ageInDays) {
+            return { ageInDays, repo };
+          }
 
-        if (ageInDays > newestAge) {
-          newestAge = ageInDays;
-          newestRepo = repo;
-        }
-      });
+          return oldest;
+        },
+        { ageInDays: -Infinity, repo: null }
+      ).repo;
+
+      const newestRepo = repositories.reduce(
+        (newest, repo) => {
+          const repoCreationDate = new Date(repo.dateOfCreation);
+          const diffInTime = currentDate.getTime() - repoCreationDate.getTime();
+          const ageInDays = Math.trunc(diffInTime / (1000 * 3600 * 24));
+
+          if (ageInDays < newest.ageInDays) {
+            return { ageInDays, repo };
+          }
+
+          return newest;
+        },
+        { ageInDays: Infinity, repo: null }
+      ).repo;
 
       res.status(200).json({ oldestRepo, newestRepo });
     } catch (err) {
-      console.error("Error:", err);
+      if (
+        err instanceof UserNotFoundError ||
+        err instanceof FailedToFetchDocumentFromDatabase
+      ) {
+        return res.status(err.statusCode).json(err);
+      }
       res.status(500).json({ message: "Internal server error" });
     }
   },
