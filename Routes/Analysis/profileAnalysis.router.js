@@ -12,6 +12,7 @@ const {
   getNumberOfLinesOfCodePushedAnalysis,
   getTotalStarsForProfileAnalysis,
   getNewestAndOldestRepoAnalysis,
+  getOrganisationAnalysis,
 } = require("../../Controller/userStatisticalAnalysis.controller");
 
 ProfileAnalysisRouter.get(
@@ -57,5 +58,9 @@ ProfileAnalysisRouter.get(
 ProfileAnalysisRouter.get(
   "/user/profileAnalysis/oldestNewestRepo",
   getNewestAndOldestRepoAnalysis
+);
+ProfileAnalysisRouter.get(
+  "/user/profileAnalysis/getCompanyNameAnalysis",
+  getOrganisationAnalysis
 );
 module.exports = ProfileAnalysisRouter;

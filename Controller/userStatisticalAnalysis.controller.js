@@ -349,4 +349,25 @@ module.exports = {
       res.status(500).json({ message: "Internal server error" });
     }
   },
+  getOrganisationAnalysis: async (req, res) => {
+    const userId = req.query.id;
+    try {
+      const user = await User.findById(userId);
+      if (!user) {
+        throw new UserNotFoundError(
+          "This user does not exists in our database"
+        );
+      }
+      if (user.Company === "") {
+        return res.status(200).json({ Company: "None" });
+      } else {
+        return res.status(200).json({ Company: user.Company });
+      }
+    } catch (err) {
+      if (err instanceof UserNotFoundError) {
+        return res.status(err.statusCode).json(err);
+      }
+      return res.status(500).json(err);
+    }
+  },
 };
