@@ -370,4 +370,35 @@ module.exports = {
       return res.status(500).json(err);
     }
   },
+  getTopRepositoryAnalysis: async (req, res) => {
+    const userId = req.query.id;
+    try {
+      const user = await User.findById(userId);
+      if (!user) {
+        throw new UserNotFoundError(
+          "This user does not exists in our database"
+        );
+      }
+      const repositoryDocument = await Repository.findById(user.GithubRepoId);
+      var topRepo = {};
+      var negCount = Number.NEGATIVE_INFINITY;
+      repositoryDocument.repositories.forEach((repo) => {
+        if (repo.repoStarsCount > negCount) {
+          topRepo = {
+            Name: repo.name,
+            StarsCount: repo.repoStarsCount,
+            Language: repo.buildLanguage,
+            DateOfCreation: repo.dateOfCreation,
+          };
+          negCount = repo.repoStarsCount;
+        }
+      });
+      return res.status(200).json(topRepo);
+    } catch (err) {
+      if (err instanceof UserNotFoundError) {
+        return res.status(err.statusCode).json(err);
+      }
+      return res.status(500).json(err);
+    }
+  },
 };
