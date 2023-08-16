@@ -405,7 +405,17 @@ module.exports = {
     const userId = req.query.id;
     try {
       const user = await User.findById(userId);
+      if (!user) {
+        throw new UserNotFoundError(
+          "This user does not exists in our database"
+        );
+      }
       const repositoryDocument = await Repository.findById(user.GithubRepoId);
+      if (!repositoryDocument) {
+        throw new FailedToFetchDocumentFromDatabase(
+          "Unable to fetch the document from the database"
+        );
+      }
       const currentDate = new Date();
 
       let mostRecentCommit = null;
@@ -424,20 +434,24 @@ module.exports = {
               commitDate: commitDate,
               ageInDays: diffInDays,
               repoName: repo.name,
-              commitData: commit, // You might want to store more commit information here
+              commitData: commit,
             };
           }
         });
       });
 
       if (mostRecentCommit !== null) {
-        // You can now use mostRecentCommit to perform further analysis or respond to the request
-        // For example, you might want to send the most recent commit data back in the response
-        res.json({ mostRecentCommit });
+        res.status(200).json({ mostRecentCommit });
       } else {
-        res.json({ message: "No commits found" });
+        res.status(200).json({ message: "No commits found" });
       }
     } catch (err) {
+      if (
+        err instanceof UserNotFoundError ||
+        err instanceof FailedToFetchDocumentFromDatabase
+      ) {
+        return res.status(err.statusCode).json(err);
+      }
       res.status(500).json({ error: "An error occurred" });
     }
   },
