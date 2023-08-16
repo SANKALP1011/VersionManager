@@ -401,5 +401,44 @@ module.exports = {
       return res.status(500).json(err);
     }
   },
-  getMostRecentRepositoryCommitAnalysis: async (req, res) => {},
+  getMostRecentRepositoryCommitAnalysis: async (req, res) => {
+    const userId = req.query.id;
+    try {
+      const user = await User.findById(userId);
+      const repositoryDocument = await Repository.findById(user.GithubRepoId);
+      const currentDate = new Date();
+
+      let mostRecentCommit = null;
+
+      repositoryDocument.repositories.forEach((repo) => {
+        repo.commit_history.forEach((commit) => {
+          const commitDate = new Date(commit.commit_Date);
+          const diffInDays =
+            (currentDate.getTime() - commitDate.getTime()) / (1000 * 3600 * 24);
+
+          if (
+            mostRecentCommit === null ||
+            diffInDays < mostRecentCommit.ageInDays
+          ) {
+            mostRecentCommit = {
+              commitDate: commitDate,
+              ageInDays: diffInDays,
+              repoName: repo.name,
+              commitData: commit, // You might want to store more commit information here
+            };
+          }
+        });
+      });
+
+      if (mostRecentCommit !== null) {
+        // You can now use mostRecentCommit to perform further analysis or respond to the request
+        // For example, you might want to send the most recent commit data back in the response
+        res.json({ mostRecentCommit });
+      } else {
+        res.json({ message: "No commits found" });
+      }
+    } catch (err) {
+      res.status(500).json({ error: "An error occurred" });
+    }
+  },
 };
