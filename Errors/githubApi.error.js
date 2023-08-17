@@ -56,6 +56,14 @@ class FailedToFetchGithubFollowingCounts extends CustomApiErrors {
   }
 }
 
+class FailedToFetchProfileEventsForUser extends CustomApiErrors {
+  constructor(message) {
+    super(message);
+    this.name = "FailedToFetchProfileEventsForUser";
+    this.statusCode = 404;
+  }
+}
+
 module.exports = {
   FailedToFetchReposfromGithub,
   FailedToGetRepoPullRequest,
@@ -64,4 +72,5 @@ module.exports = {
   FailedToFetchRespoistoryCommitsList,
   FailedToFetchGithubFollowersCounts,
   FailedToFetchGithubFollowingCounts,
+  FailedToFetchProfileEventsForUser,
 };

@@ -492,4 +492,5 @@ module.exports = {
       return res.status(500).json({ error: "An error occurred" });
     }
   },
+  getUserProfileEventsAnalysis: async (req, res) => {},
 };
