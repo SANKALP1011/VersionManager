@@ -15,6 +15,7 @@ const {
   getOrganisationAnalysis,
   getTopRepositoryAnalysis,
   getMostRecentRepositoryCommitAnalysis,
+  getTotalPullRequestCountAnalysis,
 } = require("../../Controller/userStatisticalAnalysis.controller");
 
 ProfileAnalysisRouter.get(
@@ -72,5 +73,9 @@ ProfileAnalysisRouter.get(
 ProfileAnalysisRouter.get(
   "/user/profileAnalysis/getRecentCommitAnalysis",
   getMostRecentRepositoryCommitAnalysis
+);
+ProfileAnalysisRouter.get(
+  "/user/profileAnalysis/getPullRequestAnalysis",
+  getTotalPullRequestCountAnalysis
 );
 module.exports = ProfileAnalysisRouter;

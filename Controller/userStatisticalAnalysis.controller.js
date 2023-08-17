@@ -16,6 +16,7 @@ const {
 } = require("../Errors/analysis.error");
 const {
   FailedToFetchDocumentFromDatabase,
+  FailedToPerformCountOfDocuments,
 } = require("../Errors/databaseError.error");
 const { UserNotFoundError } = require("../Errors/userAuth.error");
 
@@ -453,6 +454,42 @@ module.exports = {
         return res.status(err.statusCode).json(err);
       }
       res.status(500).json({ error: "An error occurred" });
+    }
+  },
+  getTotalPullRequestCountAnalysis: async (req, res) => {
+    const userId = req.query.id;
+    try {
+      const user = await User.findById(userId);
+      if (!user) {
+        throw new UserNotFoundError(
+          "This user does not exists in our database"
+        );
+      }
+      const PullRequesData = await PullRequest.countDocuments();
+      if (!PullRequesData) {
+        throw new FailedToPerformCountOfDocuments(
+          "Unable to fetch the document from the database and count them"
+        );
+      }
+      if (PullRequesData === 0) {
+        return res.status(200).json({
+          Meesage:
+            "There is no pull request created by you for any of your repository",
+          Count: PullRequesData,
+        });
+      } else {
+        return res.status(200).json({
+          CountOfRepsitoryHavingPullRequest: PullRequesData,
+        });
+      }
+    } catch (err) {
+      if (
+        err instanceof UserNotFoundError ||
+        err instanceof FailedToPerformCountOfDocuments
+      ) {
+        return res.status(err.statusCode).json(err);
+      }
+      return res.status(500).json({ error: "An error occurred" });
     }
   },
 };

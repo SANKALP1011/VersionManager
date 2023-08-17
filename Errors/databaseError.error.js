@@ -30,9 +30,17 @@ class FailedToFetchDocumentFromDatabase extends CustomApiErrors {
   }
 }
 
+class FailedToPerformCountOfDocuments extends CustomApiErrors {
+  constructor(message) {
+    super(message);
+    this.name = "FailedToPerformCountOfDocuments";
+  }
+}
+
 module.exports = {
   DatabaseError,
   FailedToSaveDocumentToDatabase,
   FailedToUpdateDocumetInDatabase,
   FailedToFetchDocumentFromDatabase,
+  FailedToPerformCountOfDocuments,
 };

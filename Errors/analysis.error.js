@@ -31,6 +31,13 @@ class FailedToPerformTopicCountsAnalysis extends CustomApiErrors {
   }
 }
 
+class FailedToPerformCountOfDocuments extends CustomApiErrors {
+  constructor(message) {
+    super(message);
+    this.name = "FailedToPerformCountOfDocuments";
+  }
+}
+
 module.exports = {
   FailedToPerformFollowerorFollowingCountAnalysis,
   FailedToPerformFollowwrToFollowingRation,
