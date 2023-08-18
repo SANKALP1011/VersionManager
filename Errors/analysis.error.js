@@ -31,10 +31,11 @@ class FailedToPerformTopicCountsAnalysis extends CustomApiErrors {
   }
 }
 
-class FailedToPerformCountOfDocuments extends CustomApiErrors {
+class FailedToGetPushEventDataAnalysis extends CustomApiErrors {
   constructor(message) {
     super(message);
-    this.name = "FailedToPerformCountOfDocuments";
+    this.name = "FailedToGetPushEventDataAnalysis";
+    this.statusCode = 404;
   }
 }
 
@@ -43,4 +44,5 @@ module.exports = {
   FailedToPerformFollowwrToFollowingRation,
   FailedToPerformRepoCountAnalysis,
   FailedToPerformTopicCountsAnalysis,
+  FailedToGetPushEventDataAnalysis,
 };

@@ -9,10 +9,12 @@ const {
   getUpdatedClosedCounts,
   getUpdatedStarsCounts,
 } = require("../Helpers/Job Helpers/profileJob.helper");
+const { getUserActionsEvents } = require("../Github Service/profile.service");
 const {
   FailedToPerformFollowerorFollowingCountAnalysis,
   FailedToPerformFollowwrToFollowingRation,
   FailedToPerformRepoCountAnalysis,
+  FailedToGetPushEventDataAnalysis,
 } = require("../Errors/analysis.error");
 const {
   FailedToFetchDocumentFromDatabase,
@@ -492,5 +494,108 @@ module.exports = {
       return res.status(500).json({ error: "An error occurred" });
     }
   },
-  getUserProfileEventsAnalysis: async (req, res) => {},
+  getUserPushEventsAnalysis: async (req, res) => {
+    const userId = req.query.id;
+    try {
+      const user = await User.findById(userId);
+      if (!user) {
+        throw new UserNotFoundError(
+          "This user does not exists in our database"
+        );
+      }
+      const events = await getUserActionsEvents(user.GithubUserName);
+      if (!Array.isArray(events)) {
+        throw new FailedToGetPushEventDataAnalysis(
+          `Unable to get the push events analysis data for the profile with name ${user.GithubUserName}`
+        );
+      }
+      const pushEvent = [];
+      events.filter((event) => {
+        if (event.type === "PushEvent") {
+          pushEvent.push({
+            EventType: event.type,
+            date: event.created_at,
+            repoName: event.repo.name,
+          });
+        }
+      });
+
+      return res.status(200).json(pushEvent);
+    } catch (err) {
+      if (
+        err instanceof UserNotFoundError ||
+        err instanceof FailedToGetPushEventDataAnalysis
+      ) {
+        return res.status(err.statusCode).json(err);
+      }
+      return res.status(500).json(err);
+    }
+  },
+  getUserPullEventAnalysis: async (req, res) => {
+    const userId = req.query.id;
+    try {
+      const user = await User.findById(userId);
+      if (!user) {
+        throw new UserNotFoundError(
+          "This user does not exists in our database"
+        );
+      }
+      const events = await getUserActionsEvents(user.GithubUserName);
+
+      if (!Array.isArray(events)) {
+        throw new FailedToGetPushEventDataAnalysis(
+          `Unable to get the pull events analysis data for the profile with name ${user.GithubUserName}`
+        );
+      }
+      const pullEvent = [];
+      events.filter((event) => {
+        if (event.type === "PullRequestEvent") {
+          pullEvent.push({
+            EventType: event.type,
+            date: event.created_at,
+            repoName: event.repo.name,
+          });
+        }
+      });
+      return res.status(200).json(pullEvent);
+    } catch (err) {
+      if (
+        err instanceof UserNotFoundError ||
+        err instanceof FailedToGetPushEventDataAnalysis
+      ) {
+        return res.status(err.statusCode).json(err);
+      }
+      return res.status(500).json(err);
+    }
+  },
+  getUserWatchEventAnalysis: async (req, res) => {
+    const userId = req.query.id;
+    try {
+      const user = await User.findById(userId);
+      if (!user) {
+        throw new UserNotFoundError(
+          "This user does not exists in our database"
+        );
+      }
+      const events = await getUserActionsEvents(user.GithubUserName);
+      if (!Array.isArray(events)) {
+        throw new FailedToGetPushEventDataAnalysis(
+          `Unable to get the pull events analysis data for the profile with name ${user.GithubUserName}`
+        );
+      }
+      const watchEvent = [];
+      events.filter((event) => {
+        if (event.type === "WatchEvent") {
+          watchEvent.push({
+            EventType: event.type,
+            date: event.created_at,
+            repoName: event.repo.name,
+          });
+        }
+      });
+      return res.status(200).json(watchEvent);
+    } catch (err) {
+      console.log(err);
+    }
+  },
 };

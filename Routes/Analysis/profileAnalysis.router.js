@@ -16,6 +16,9 @@ const {
   getTopRepositoryAnalysis,
   getMostRecentRepositoryCommitAnalysis,
   getTotalPullRequestCountAnalysis,
+  getUserPushEventsAnalysis,
+  getUserPullEventAnalysis,
+  getUserWatchEventAnalysis,
 } = require("../../Controller/userStatisticalAnalysis.controller");
 
 ProfileAnalysisRouter.get(
@@ -77,5 +80,17 @@ ProfileAnalysisRouter.get(
 ProfileAnalysisRouter.get(
   "/user/profileAnalysis/getPullRequestAnalysis",
   getTotalPullRequestCountAnalysis
+);
+ProfileAnalysisRouter.get(
+  "/user/profileAnalysis/getUserPushEventsAnalysis",
+  getUserPushEventsAnalysis
+);
+ProfileAnalysisRouter.get(
+  "/user/profileAnalysis/getUserPullEventsAnalysis",
+  getUserPullEventAnalysis
+);
+ProfileAnalysisRouter.get(
+  "/user/profileAnalysis/getUserWatchEventsAnalysis",
+  getUserWatchEventAnalysis
 );
 module.exports = ProfileAnalysisRouter;

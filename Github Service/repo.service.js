@@ -73,9 +73,4 @@ module.exports = {
       throw new FailedToFetchRespoistoryCommitsList(err);
     }
   },
-  getUserOrganisation: async (owner) => {
-    try {
-      const response = await axios.default.get(`${GITHUB_BASE_URL}`)
-    } catch (err) {}
-  },
 };
