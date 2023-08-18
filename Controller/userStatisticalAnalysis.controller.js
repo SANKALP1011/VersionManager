@@ -1,6 +1,7 @@
 const User = require("../Model/User.model");
 const PullRequest = require("../Model/UserPullRequest.model");
 const Repository = require("../Model/UserRepo.Model");
+const { PostHog } = require("posthog-node");
 const { scheduleFollowerUpdateJob } = require("../Scheduler/profile.scheduler");
 const {
   getUpdatedFollower,
@@ -592,6 +593,14 @@ module.exports = {
             repoName: event.repo.name,
           });
         }
+      });
+      const client = new PostHog(process.env.POSTHOG_API_KEY, {
+        host: "https://app.posthog.com",
+      });
+
+      client.capture({
+        distinctId: `${user.GithubUserName} successfully performed watch event analysis`,
+        event: "Watch Event Analysis",
       });
       return res.status(200).json(watchEvent);
     } catch (err) {
