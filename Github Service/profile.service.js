@@ -28,14 +28,36 @@ module.exports = {
   },
   getUserActionsEvents: async (userName) => {
     try {
-      const response = await axios.default.get(
-        `${GITHUB_BASE_URL}/users/${userName}/events`
-      );
-      return response.data;
+      const events = [];
+      let url = `${GITHUB_BASE_URL}/users/${userName}/events`;
+
+      while (url) {
+        const response = await axios.get(url);
+        events.push(...response.data);
+
+        const linkHeader = response.headers.link;
+        const nextLink = findNextLink(linkHeader);
+
+        url = nextLink;
+      }
+
+      return events;
     } catch (err) {
       throw new FailedToFetchProfileEventsForUser(
         "Unable to fetch the events for the user profile"
       );
     }
   },
+};
+
+const findNextLink = (linkHeader) => {
+  if (linkHeader) {
+    const links = linkHeader.split(",");
+    const nextLink = links.find((link) => link.includes('rel="next"'));
+
+    if (nextLink) {
+      return nextLink.split(";")[0].trim().slice(1, -1);
+    }
+  }
+  return null;
 };

@@ -594,14 +594,6 @@ module.exports = {
           });
         }
       });
-      const client = new PostHog(process.env.POSTHOG_API_KEY, {
-        host: "https://app.posthog.com",
-      });
-
-      client.capture({
-        distinctId: `${user.GithubUserName} successfully performed watch event analysis`,
-        event: "Watch Event Analysis",
-      });
       return res.status(200).json(watchEvent);
     } catch (err) {
       console.log(err);

@@ -23,6 +23,14 @@ module.exports = {
         console.log(newUser);
         user = newUser;
         await newUser.save();
+        const client = new PostHog(process.env.POSTHOG_API_KEY, {
+          host: "https://app.posthog.com",
+        });
+
+        client.capture({
+          distinctId: `${user.GithubUserName} successfully signed up to your version manager api.`,
+          event: "Authentication Event",
+        });
       }
       console.log(token);
       const data = {
