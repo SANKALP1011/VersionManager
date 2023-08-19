@@ -596,7 +596,13 @@ module.exports = {
       });
       return res.status(200).json(watchEvent);
     } catch (err) {
-      console.log(err);
+      if (
+        err instanceof UserNotFoundError ||
+        err instanceof FailedToGetPushEventDataAnalysis
+      ) {
+        return res.status(err.statusCode).json(err);
+      }
+      return res.status(500).json(err);
     }
   },
 };
