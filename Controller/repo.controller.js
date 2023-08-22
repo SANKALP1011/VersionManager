@@ -369,7 +369,7 @@ module.exports = {
       }
       const repositories = await getRepositoryHelper(user.GithubRepoId);
       if (!Array.isArray(repositories.repositories)) {
-        throw new FailedToFetchRepositoryIssues(
+        throw new FailedToFetchtRepositoryIssues(
           `Unable to get the issues for the repository with the name ${repoName}`
         );
       }
@@ -389,7 +389,6 @@ module.exports = {
         repo.openIssuesCount = response.length;
       }
 
-      // Assuming repositories.save() is the correct method to save changes.
       await repositories.save();
 
       return res.status(200).json(response.length);
@@ -401,7 +400,7 @@ module.exports = {
       ) {
         return res.status(err.statusCode).json(err);
       }
-      // Handle other errors with a generic response
+
       return res.status(500).json({ error: "An error occurred" });
     }
   },
