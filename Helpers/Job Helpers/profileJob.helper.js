@@ -15,7 +15,11 @@ const {
   FetchToFailRepositoriesError,
 } = require("../../Errors/githubApi.error");
 
-const databaseHelper = require("../Database Helpers/database.helper");
+const {
+  getUserHelper,
+  getPullRequestHelper,
+  getRepositoryHelper,
+} = require("../Database Helpers/database.helper");
 
 module.exports = {
   getUpdatedFollower: async (userId) => {
@@ -206,10 +210,6 @@ module.exports = {
           }
         })
       );
-
-      // Now you can update the repositoryDocument with the updatedRepositories array
-      // repositoryDocument.repositories = updatedRepositories;
-      // await repositoryDocument.save();
     } catch (err) {
       console.error(err);
     }
