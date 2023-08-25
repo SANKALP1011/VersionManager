@@ -1,4 +1,4 @@
-const CustomApiErrors = require("../Errors/customApi.error");
+const CustomApiErrors = require("../customApi.error");
 
 class FetchToFailRepositoriesError extends CustomApiErrors {
   constructor(message) {

@@ -7,7 +7,7 @@ const {
   FailedToFetchRepositoryBranch,
   FailedToFetchRespositoryIssues,
   FailedToFetchRespoistoryCommitsList,
-} = require("../Errors/githubApi.error");
+} = require("../Errors/Github Api/githubApi.error");
 
 axios.default.defaults.headers.common["Authorization"] =
   process.env.GITHUB_ACCESS_TOKEN;

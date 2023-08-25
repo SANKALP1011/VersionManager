@@ -8,12 +8,12 @@ const {
   getUserRepo,
   getRepostoryIssues,
 } = require("../../Github Service/repo.service");
-const { UserNotFoundError } = require("../../Errors/userAuth.error");
+const { UserNotFoundError } = require("../../Errors/Auth/userAuth.error");
 const {
   FailedToFetchGithubFollowersCounts,
   FailedToFetchGithubFollowingCounts,
   FetchToFailRepositoriesError,
-} = require("../../Errors/githubApi.error");
+} = require("../../Errors/Github Api/githubApi.error");
 
 const {
   getUserHelper,

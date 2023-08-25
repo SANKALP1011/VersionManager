@@ -1,4 +1,4 @@
-const CustomApiErrors = require("./customApi.error");
+const CustomApiErrors = require("../customApi.error");
 
 class DatabaseError extends CustomApiErrors {
   constructor(message, code) {

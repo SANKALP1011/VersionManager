@@ -1,4 +1,4 @@
-const CustomApiErrors = require("../Errors/customApi.error");
+const CustomApiErrors = require("../customApi.error");
 
 class FailedToPerformFollowerorFollowingCountAnalysis extends CustomApiErrors {
   constructor(message) {

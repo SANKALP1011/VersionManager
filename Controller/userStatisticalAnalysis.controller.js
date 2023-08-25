@@ -16,12 +16,12 @@ const {
   FailedToPerformFollowwrToFollowingRation,
   FailedToPerformRepoCountAnalysis,
   FailedToGetPushEventDataAnalysis,
-} = require("../Errors/analysis.error");
+} = require("../Errors/Analysis/analysis.error");
 const {
   FailedToFetchDocumentFromDatabase,
   FailedToPerformCountOfDocuments,
-} = require("../Errors/databaseError.error");
-const { UserNotFoundError } = require("../Errors/userAuth.error");
+} = require("../Errors/Database/databaseError.error");
+const { UserNotFoundError } = require("../Errors/Auth/userAuth.error");
 
 module.exports = {
   getFollowerCountAnalysis: async (req, res) => {

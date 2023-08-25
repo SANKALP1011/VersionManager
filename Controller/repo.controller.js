@@ -14,7 +14,7 @@ const {
   getRepostoryIssues,
   getRepositoryCommits,
 } = require("../Github Service/repo.service");
-const { UserNotFoundError } = require("../Errors/userAuth.error");
+const { UserNotFoundError } = require("../Errors/Auth/userAuth.error");
 const {
   FailtoFetchSingleRepoByName,
   FetchToFailRepositoriesError,
@@ -22,10 +22,10 @@ const {
   FailedToFetchRepositoryLanguages,
   FailedToGetRepoistoryBranchs,
   FailedToFetchtRepositoryIssues,
-} = require("../Errors/repo.error");
+} = require("../Errors/Repo/repo.error");
 const {
   FailedToSaveDocumentToDatabase,
-} = require("../Errors/databaseError.error");
+} = require("../Errors/Database/databaseError.error");
 const { json } = require("express");
 
 module.exports = {

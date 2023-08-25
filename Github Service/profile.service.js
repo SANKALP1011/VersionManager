@@ -2,7 +2,7 @@ const { GITHUB_BASE_URL } = require("../Utils/baseUrl.util");
 const axios = require("axios");
 const {
   FailedToFetchProfileEventsForUser,
-} = require("../Errors/githubApi.error");
+} = require("../Errors/Github Api/githubApi.error");
 
 module.exports = {
   getUpdatedFollowerCount: async (userName) => {

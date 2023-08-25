@@ -15,8 +15,11 @@ const ProfileAnalysisRoutes = require("./Routes/Analysis/profileAnalysis.router"
 const key = require("./Config/keys.config");
 const port = process.env.PORT || "3004";
 require("dotenv").config({ path: require("find-config")(".env") });
-const { DatabaseError } = require("./Errors/databaseError.error");
-const { PortNotFreeError, ServerRunError } = require("./Errors/server.error");
+const { DatabaseError } = require("./Errors/Database/databaseError.error");
+const {
+  PortNotFreeError,
+  ServerRunError,
+} = require("./Errors/Server/server.error");
 
 mongoose
   .connect(process.env.MONGO_DB_URL)
