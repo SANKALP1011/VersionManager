@@ -7,6 +7,8 @@ const {
   getUpdatedClosedCounts,
 } = require("../Helpers/Job Helpers/profileJob.helper");
 
+// Evening job schdduler
+
 module.exports = {
   scheduleFollowerUpdateJob: async (userId) => {
     cron.schedule("0 0 * * *", async () => {
