@@ -10,7 +10,6 @@ const {
 } = require("./Controller/githubStrategies.controller");
 const InitialRoutes = require("./Routes/Initial/initial.router");
 const GithubRoutes = require("./Routes/Auth/githubAuth.router");
-const ProfileRoutes = require("./Routes/User/profile.router");
 const RepoRoutes = require("./Routes/Repository/repos.routes");
 const ProfileAnalysisRoutes = require("./Routes/Analysis/profileAnalysis.router");
 const key = require("./Config/keys.config");
@@ -62,7 +61,6 @@ passport.use(
 
 app.use(InitialRoutes);
 app.use("/auth", GithubRoutes);
-app.use("/auth", ProfileRoutes);
 app.use("/auth", RepoRoutes);
 app.use("/auth", ProfileAnalysisRoutes);
 
