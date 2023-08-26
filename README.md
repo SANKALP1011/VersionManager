@@ -175,3 +175,17 @@
       - profile.scheduler.js
   ```
 
+# Steps for docker Containerisation
+ 
+ - Clone the docker image from docker hub from the below link.
+  
+   > LINK
+
+ - Build the docker image on your local machiene with the help of following command 
+   
+   > docker build -t VersionAnalysis .
+
+ - Run the docker on your local image with the help of following command
+   
+   >  docker run -p 3004:3004 VersionAnalysis 
+ 
