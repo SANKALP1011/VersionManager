@@ -179,7 +179,7 @@
  
  - Clone the docker image from docker hub from the below link.
   
-   > LINK
+   > LINK (Would be provided later)
 
  - Build the docker image on your local machiene with the help of following command 
    
