@@ -175,7 +175,7 @@
       - profile.scheduler.js
   ```
 
-# Steps for docker Containerisation
+# Steps for docker image
 
  - Build the docker image on your local machiene with the help of following command 
    
@@ -184,4 +184,34 @@
  - Run the docker on your local image with the help of following command
    
    >  docker run -p 3004:3004 versionanalysis 
+
+# Steps for running the api
+
+ - Clone the api with the following command 
+
+   > git clone https://github.com/SANKALP1011/VersionManager.git
+
+ - Configure your github app key in the following file
+   
+   ``` javascript
+    - Config
+       - keys.congig.js
+
+       // Add your key here
+     
+       GithubKey: 
+       {
+       ClientId: "YOUR ID",
+       ClientSecret: "YOUR CLIENT SECRET",
+       CallbackUrl: "http://localhost:3004/auth/github/callback",
+       },
+   ```
+
+  - Run your backend with the help of following
+  
+    > nodemon app.js
+  
+  - You can run your docker image with the help of following command
+
+    > docker run -p 3004:3004 versionanalysis 
  
