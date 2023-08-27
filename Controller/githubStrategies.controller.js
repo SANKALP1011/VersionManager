@@ -1,6 +1,6 @@
 const express = require("express");
 const User = require("../Model/User.model");
-const jwt = require("jsonwebtoken");
+const { sign } = require("jsonwebtoken");
 
 module.exports = {
   githubController: async (token, refreshToken, profile, done) => {
@@ -20,7 +20,6 @@ module.exports = {
           GiHubFollowres: profile._json.followers,
           GitHubFollowing: profile._json.following,
         });
-        console.log(newUser);
         user = newUser;
         await newUser.save();
         const client = new PostHog(process.env.POSTHOG_API_KEY, {
@@ -32,10 +31,14 @@ module.exports = {
           event: "Authentication Event",
         });
       }
-      console.log(token);
+      const payLoad = user._id;
+      const LogInToken = sign(payLoad, "VER123", {
+        expiresIn: "24h",
+      });
       const data = {
         user: user,
         accessToken: token,
+        authToken: LogInToken,
       };
       return done(null, data);
     } catch (err) {
