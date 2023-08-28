@@ -33,7 +33,7 @@
    - Mongo DB
 ```
 
-- ## Deployment ✅
+- ## Deployment ✅ (TO BE DONE BY THIS WEEK)
 
 ``` javascript
     - Amazon EC2 Instance
