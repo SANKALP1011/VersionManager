@@ -7,8 +7,6 @@ const {
   getUpdatedFollower,
   getUpdatedFollowing,
   getUpdatedUserRepos,
-  getUpdatedClosedCounts,
-  getUpdatedStarsCounts,
 } = require("../Helpers/Job Helpers/profileJob.helper");
 const { getUserActionsEvents } = require("../Github Service/profile.service");
 const {

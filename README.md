@@ -6,6 +6,10 @@
 - Once the data is fetched , we perform the analysis of the data based on various categories and send this data to the user with the help of our various analysis endpoints.
 - In our frontend , there would be a dashboard that would showcase all these analysis data to the user.
 
+# NOTE / TO ADD
+- Currently , I am working on the scheduler code and process for the api which need to be added.
+- It would done as soon as possible.
+
 # Tech Stack
 
 - ## Backend
@@ -173,6 +177,60 @@
   ``` javascript
     - Scheduler
       - profile.scheduler.js
+  ```
+
+# Routes / Endpoints 
+ 
+  - ## Authentication through Github
+  
+  ``` javascript
+      - GithubRouter.get("/github", githubAuth);
+      - GithubRouter.get("/github/callback",             githubAuthCallback);
+  ```
+
+  - ## Initial / Welcome Route
+
+  ``` javascript
+      - InitialRouter.get("/", initial);
+  ```
+
+  - ## Repository 
+
+  ``` javascript
+      - ReposRouter.get("/user/repos", getUserRepository);
+      - ReposRouter.get("/user/repos/getRepoByName",  getRepositoryByName);
+      - ReposRouter.get( "/user/repos/repo/getPullRequest",getRepositoryClosedPullRequest);
+      - ReposRouter.get("/user/repos/repo/getRepoTopics", getRepositoryTopic);
+      - ReposRouter.get("/user/repos/repo/getRepoLang", getRepositoryLanguages);
+      - ReposRouter.get("/user/repos/repo/getBranches", getRepositoryBranchList);
+      - ReposRouter.get("/user/repos/repo/getIssues", getRepositoryIssue);
+      - ReposRouter.get("/user/repos/repo/getCommits", getRepositoryCommits);
+  ```
+
+  - ## Analysis
+
+  ``` javascript
+      - ProfileAnalysisRouter.get("/user/profileAnalysis/followerAnalysis",getFollowerCountAnalysis);
+      - ProfileAnalysisRouter.get("/user/profileAnalysis/followingAnalysis",getFollowingCountAnalysis);
+      - ProfileAnalysisRouter.get("/user/profileAnalysis/followerToFollowingRatio",  getFollowerToFollowingCountAnalysis);
+      - ProfileAnalysisRouter.get("/user/profileAnalysis/repoCountAnalysis", getNumberOfPublicAndPrivateRepoAnalysis);
+      - ProfileAnalysisRouter.get("/user/profileAnalysis/tsotalLanguageCountsAnalysi",getLanguagesUsedAnalysis);
+      - ProfileAnalysisRouter.get("/user/profileAnalysis/totalTopicsCounts",getMostUsedTopicAnalysis);
+      - ProfileAnalysisRouter.get("/user/profileAnalysis/totalClosedIssuesCounts",
+      getTotalClosedIssueAnalysis);
+      - ProfileAnalysisRouter.get("/user/profileAnalysis/totalOpenIssuesCounts",getTotalOpenIssueAnalysis);
+      - ProfileAnalysisRouter.get("/user/profileAnalysis/totalLinesOfCodePushed",getNumberOfLinesOfCodePushedAnalysis);
+      - ProfileAnalysisRouter.get("/user/profileAnalysis/totalStarsCounts",getTotalStarsForProfileAnalysis);
+      - ProfileAnalysisRouter.get("/user/profileAnalysis/oldestNewestRepo",getNewestAndOldestRepoAnalysis);
+      - ProfileAnalysisRouter.get("/user/profileAnalysis/getCompanyNameAnalysis",getOrganisationAnalysis);
+      - ProfileAnalysisRouter.get("/user/profileAnalysis/getTopRepoAnalysis",getTopRepositoryAnalysis);
+      - ProfileAnalysisRouter.get("/user/profileAnalysis/getRecentCommitAnalysis",getMostRecentRepositoryCommitAnalysis);
+      - ProfileAnalysisRouter.get("/user/profileAnalysis/getPullRequestAnalysis",getTotalPullRequestCountAnalysis);
+      - ProfileAnalysisRouter.get( "/user/profileAnalysis/getUserPushEventsAnalysis",getUserPushEventsAnalysis);
+      - ProfileAnalysisRouter.get("/user/profileAnalysis/getUserPullEventsAnalysis",getUserPullEventAnalysis);
+      - ProfileAnalysisRouter.get("/user/profileAnalysis/getUserWatchEventsAnalysis", getUserWatchEventAnalysis;
+
+
   ```
 
 # Steps for docker image

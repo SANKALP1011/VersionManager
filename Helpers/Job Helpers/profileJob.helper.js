@@ -210,6 +210,7 @@ module.exports = {
           }
         })
       );
+      return updatedRepositories;
     } catch (err) {
       return err;
     }
