@@ -25,6 +25,7 @@ const {
 } = require("../Errors/Repo/repo.error");
 const {
   FailedToSaveDocumentToDatabase,
+  FailedToFetchDocumentFromDatabase,
 } = require("../Errors/Database/databaseError.error");
 const { json } = require("express");
 
@@ -417,7 +418,17 @@ module.exports = {
     const repoName = req.query.repoName;
     try {
       const user = await User.findById(userId);
+      if (!user) {
+        throw new UserNotFoundError(
+          "This user does not exists in our database"
+        );
+      }
       const repositporyDocumet = await Repository.findById(user.GithubRepoId);
+      if (!repositporyDocumet) {
+        throw new FailedToFetchDocumentFromDatabase(
+          `Unable to fetch the repo document from the database for the user ${user.GithubUserName}`
+        );
+      }
       const repo = repositporyDocumet.repositories.find(
         (repo) => repo.name === repoName
       );
@@ -434,6 +445,14 @@ module.exports = {
       });
       await repositporyDocumet.save();
       return res.status(200).json(repo.commit_history);
-    } catch (err) {}
+    } catch (err) {
+      if (
+        err instanceof UserNotFoundError ||
+        err instanceof FailedToFetchDocumentFromDatabase
+      ) {
+        return res.status(err.statusCode).json(err);
+      }
+      return res.status(500).json({ Error: err });
+    }
   },
 };
