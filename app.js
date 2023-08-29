@@ -13,7 +13,7 @@ const GithubRoutes = require("./Routes/Auth/githubAuth.router");
 const RepoRoutes = require("./Routes/Repository/repos.routes");
 const ProfileAnalysisRoutes = require("./Routes/Analysis/profileAnalysis.router");
 const key = require("./Config/keys.config");
-const port = process.env.PORT || "3004";
+const port = process.env.PORT || 3004;
 require("dotenv").config({ path: require("find-config")(".env") });
 const { DatabaseError } = require("./Errors/Database/databaseError.error");
 const {
