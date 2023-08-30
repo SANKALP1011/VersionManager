@@ -10,6 +10,10 @@
 - Currently , I am working on the scheduler code and process for the api which need to be added.
 - It would done as soon as possible.
 
+# Run on Postman
+
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/24017825-702a4f33-fb25-43e4-8bfa-8283ef7c6c3d?action=collection%2Ffork&source=rip_markdown&collection-url=entityId%3D24017825-702a4f33-fb25-43e4-8bfa-8283ef7c6c3d%26entityType%3Dcollection%26workspaceId%3D990956c8-761b-45c0-b366-b7b0942cad45)
+
 # Tech Stack
 
 - ## Backend
