@@ -260,30 +260,40 @@ module.exports = {
     const repoName = req.query.repoName;
     try {
       const user = await User.findById(userId);
-      const repositoryDocument = await Repository.findById(user.GithubRepoId);
+
       if (!user) {
         throw new UserNotFoundError("This user does not exist in our database");
       }
+
+      const repositoryDocument = await Repository.findById(user.GithubRepoId);
+
+      if (!repositoryDocument) {
+        throw new RepositoryNotFoundError("Repository not found for this user");
+      }
+
       const builtLanguages = await getRepositoryBuildLang(
         user.GithubUserName,
         repoName
       );
+
       if (!builtLanguages) {
         throw new FailedToFetchRepositoryLanguages(
           `Unable to fetch languages for the repository with the name ${repoName}`
         );
       }
 
-      var repo = repositoryDocument.repositories.find((repo) => {
-        return repo.name === repoName;
-      });
-      if (!repo) {
+      console.log(builtLanguages);
+
+      const repoByName = repositoryDocument.repositories.find(
+        (repo) => repo.name === repoName
+      );
+
+      if (!repoByName) {
         throw new FailtoFetchSingleRepoByName(
-          `Repo with the name ${repoName} does not exist in your profile`
+          `Repo with the name ${repoName} does not exist in the user's profile`
         );
       }
 
-      // Construct an array of language objects from the fetched language details
       const languageObject = Object.keys(builtLanguages).map((language) => {
         return {
           language: language,
@@ -294,29 +304,31 @@ module.exports = {
       console.log(languageObject);
 
       languageObject.forEach((langObj) => {
-        const index = repo.languagesBytesOfCodeUsed.findIndex(
+        const index = repoByName.languagesBytesOfCodeUsed.findIndex(
           (lang) => lang.language === langObj.language
         );
         if (index !== -1) {
-          // Language already exists, update bytesOfCode
-          repo.languagesBytesOfCodeUsed[index].bytesOfCode =
+          repoByName.languagesBytesOfCodeUsed[index].bytesOfCode =
             langObj.bytesOfCode;
         } else {
-          // Language does not exist, add new object
-          repo.languagesBytesOfCodeUsed.push(langObj);
+          repoByName.languagesBytesOfCodeUsed.push(langObj);
         }
       });
 
       await repositoryDocument.save();
-      return res.status(200).json(repo.languagesBytesOfCodeUsed);
+
+      return res.status(200).json(repoByName.languagesBytesOfCodeUsed);
     } catch (err) {
       if (
         err instanceof UserNotFoundError ||
-        err instanceof FailedToFetchRepositoryLanguages ||
-        err instanceof FailtoFetchSingleRepoByName
+        err instanceof FailtoFetchSingleRepoByName ||
+        err instanceof FailedToFetchRepositoryLanguages
       ) {
-        return res.status(err.statusCode).json(err);
+        return res.status(err.statusCode).json({ error: err });
       }
+      return res
+        .status(500)
+        .json({ error: "An internal server error occurred" });
     }
   },
   getRepositoryBranchList: async (req, res) => {
