@@ -282,8 +282,6 @@ module.exports = {
         );
       }
 
-      console.log(builtLanguages);
-
       const repoByName = repositoryDocument.repositories.find(
         (repo) => repo.name === repoName
       );
@@ -300,8 +298,6 @@ module.exports = {
           bytesOfCode: builtLanguages[language],
         };
       });
-
-      console.log(languageObject);
 
       languageObject.forEach((langObj) => {
         const index = repoByName.languagesBytesOfCodeUsed.findIndex(

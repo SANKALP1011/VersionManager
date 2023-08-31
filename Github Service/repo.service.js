@@ -15,10 +15,29 @@ axios.default.defaults.headers.common["Authorization"] =
 module.exports = {
   getUserRepo: async (owner) => {
     try {
-      const response = await axios.default.get(
-        `${GITHUB_BASE_URL}/users/${owner}/repos`
-      );
-      return response.data;
+      const allRepositories = [];
+      let page = 1;
+
+      while (true) {
+        const response = await axios.get(
+          `${GITHUB_BASE_URL}/users/${owner}/repos`,
+          {
+            params: {
+              per_page: 100, // Number of repositories per page (max allowed by GitHub)
+              page: page,
+            },
+          }
+        );
+
+        if (response.data.length === 0) {
+          break; // No more repositories
+        }
+
+        allRepositories.push(...response.data);
+        page++;
+      }
+
+      return allRepositories;
     } catch (err) {
       throw new FailedToFetchReposfromGithub(err.message);
     }
