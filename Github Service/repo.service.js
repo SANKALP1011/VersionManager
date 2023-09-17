@@ -23,14 +23,14 @@ module.exports = {
           `${GITHUB_BASE_URL}/users/${owner}/repos`,
           {
             params: {
-              per_page: 100, // Number of repositories per page (max allowed by GitHub)
+              per_page: 100,
               page: page,
             },
           }
         );
 
         if (response.data.length === 0) {
-          break; // No more repositories
+          break;
         }
 
         allRepositories.push(...response.data);

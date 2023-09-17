@@ -40,6 +40,7 @@ module.exports = {
         accessToken: token,
         authToken: LogInToken,
       };
+      // We Could save this access token in our frontend.
       return done(null, data);
     } catch (err) {
       return done(err);
