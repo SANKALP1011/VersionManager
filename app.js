@@ -22,6 +22,9 @@ const {
   ServerRunError,
 } = require("./Errors/Server/server.error");
 
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+
 mongoose
   .connect(process.env.MONGO_DB_URL)
   .then(() => {
@@ -75,9 +78,5 @@ app.use("/auth", RepoRoutes);
 app.use("/auth", ProfileAnalysisRoutes);
 
 app.listen(process.env.PORT || 3004, (err) => {
-  if (err) {
-    throw new PortNotFreeError(err);
-  } else {
-    console.log("Server up and running");
-  }
+  console.log("Server up and running");
 });
