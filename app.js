@@ -69,7 +69,7 @@ app.get("/", (req, res) => {
   res.send("Welcome to the Version Analysis Backend");
 });
 
-app.use(InitialRoutes);
+// app.use(InitialRoutes);
 app.use("/auth", GithubRoutes);
 app.use("/auth", RepoRoutes);
 app.use("/auth", ProfileAnalysisRoutes);
