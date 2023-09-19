@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const cron = require("node-cron");
+const redis = require("redis");
 const passport = require("passport");
 const session = require("express-session");
 const GithubStrategy = require("passport-github2").Strategy;
@@ -32,6 +33,8 @@ mongoose
       500
     );
   });
+
+var redisConn = redis.createClient();
 
 app.use(
   session({
