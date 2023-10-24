@@ -73,7 +73,7 @@ app.use("/auth", GithubRoutes);
 app.use("/auth", RepoRoutes);
 app.use("/auth", ProfileAnalysisRoutes);
 
-app.listen(process.env.PORT || 3004, (err) => {
+app.listen(port, (err) => {
   if (err) {
     throw new PortNotFreeError(err);
   } else {
