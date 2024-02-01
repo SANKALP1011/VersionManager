@@ -31,14 +31,14 @@ module.exports = {
           event: "Authentication Event",
         });
       }
-      const payLoad = user._id;
-      const LogInToken = sign(payLoad, "VER123", {
-        expiresIn: "24h",
-      });
+      // const payLoad = user._id;
+      // const LogInToken = sign(payLoad, "VER123", {
+      //   expiresIn: "24h",
+      // });
       const data = {
         user: user,
         accessToken: token,
-        authToken: LogInToken,
+        authToken: token,
       };
       // We Could save this access token in our frontend.
       return done(null, data);

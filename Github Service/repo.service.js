@@ -9,8 +9,9 @@ const {
   FailedToFetchRespoistoryCommitsList,
 } = require("../Errors/Github Api/githubApi.error");
 
-axios.default.defaults.headers.common["Authorization"] =
-  process.env.GITHUB_ACCESS_TOKEN;
+axios.defaults.headers.common[
+  "Authorization"
+] = `Bearer ${process.env.GITHUB_ACCESS_TOKEN}`;
 
 module.exports = {
   getUserRepo: async (owner) => {
