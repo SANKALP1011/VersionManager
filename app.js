@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const cors = require("cors");
 const cron = require("node-cron");
 const redis = require("redis");
 const passport = require("passport");
@@ -24,6 +25,7 @@ const {
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(cors());
 
 mongoose
   .connect(process.env.MONGO_DB_URL)
