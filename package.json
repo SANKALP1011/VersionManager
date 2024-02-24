@@ -1,6 +1,9 @@
 {
   "name": "versionmanager",
   "version": "1.0.0",
+  "engines": {
+    "node": ">=16.17.1"
+  },
   "description": "This is the backend for the version manager",
   "main": "app.js",
   "scripts": {
