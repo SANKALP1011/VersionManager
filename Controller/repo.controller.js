@@ -1,4 +1,4 @@
-const Repository = require("../Model/UserRepo.Model");
+const Repository = require("../Model/UserRepo.model");
 const User = require("../Model/User.model");
 const PullRequest = require("../Model/UserPullRequest.model");
 const {

@@ -1,5 +1,5 @@
 const User = require("../../Model/User.model");
-const Repository = require("../../Model/UserRepo.Model");
+const Repository = require("../../Model/UserRepo.model");
 const PullRequest = require("../../Model/UserPullRequest.model");
 
 module.exports = {

@@ -1,6 +1,6 @@
 const User = require("../Model/User.model");
 const PullRequest = require("../Model/UserPullRequest.model");
-const Repository = require("../Model/UserRepo.Model");
+const Repository = require("../Model/UserRepo.model");
 const { PostHog } = require("posthog-node");
 const { scheduleFollowerUpdateJob } = require("../Scheduler/profile.scheduler");
 const {
