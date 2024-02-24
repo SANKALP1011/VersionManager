@@ -1,8 +1,6 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
-const cron = require("node-cron");
-const redis = require("redis");
 const passport = require("passport");
 const session = require("express-session");
 const GithubStrategy = require("passport-github2").Strategy;
@@ -15,7 +13,7 @@ const GithubRoutes = require("./Routes/Auth/githubAuth.router");
 const RepoRoutes = require("./Routes/Repository/repos.routes");
 const ProfileAnalysisRoutes = require("./Routes/Analysis/profileAnalysis.router");
 const key = require("./Config/keys.config");
-const PORT = process.env.PORT || 3004;
+const Port = process.env.PORT || 3004;
 require("dotenv").config({ path: require("find-config")(".env") });
 const { DatabaseError } = require("./Errors/Database/databaseError.error");
 const {
@@ -38,8 +36,6 @@ mongoose
       500
     );
   });
-
-var redisConn = redis.createClient();
 
 app.use(
   session({
@@ -73,6 +69,6 @@ app.use("/auth", GithubRoutes);
 app.use("/auth", RepoRoutes);
 app.use("/auth", ProfileAnalysisRoutes);
 
-app.listen(PORT, (err) => {
+app.listen(Port, (err) => {
   console.log("Server up and running");
 });
