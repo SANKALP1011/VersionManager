@@ -74,9 +74,5 @@ app.use("/auth", RepoRoutes);
 app.use("/auth", ProfileAnalysisRoutes);
 
 app.listen(PORT, (err) => {
-  if (err) {
-    throw new PortNotFreeError(err);
-  } else {
-    console.log("Server up and running");
-  }
+  console.log("Server up and running");
 });
