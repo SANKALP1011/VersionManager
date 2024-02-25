@@ -5,9 +5,9 @@ const passport = require("passport");
 const session = require("express-session");
 const GithubStrategy = require("passport-github2").Strategy;
 const mongoose = require("mongoose");
-const {
-  githubController,
-} = require("./Controller/githubStrategies.controller");
+// const {
+//   githubController,
+// } = require("./Controller/githubStrategies.controller");
 const InitialRoutes = require("./Routes/Initial/initial.router");
 const GithubRoutes = require("./Routes/Auth/githubAuth.router");
 const RepoRoutes = require("./Routes/Repository/repos.routes");
