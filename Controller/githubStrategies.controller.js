@@ -1,8 +1,5 @@
 const express = require("express");
-const findConfig = require("find-config");
-const path = require("path");
-const User = require(findConfig("User.model.js") || "../Model/User.model");
-const { sign } = require("jsonwebtoken");
+const User = require("../Model/User.model");
 
 module.exports = {
   githubController: async (token, refreshToken, profile, done) => {

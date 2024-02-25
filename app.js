@@ -52,16 +52,16 @@ passport.deserializeUser((user, done) => {
   done(null, user);
 });
 
-passport.use(
-  new GithubStrategy(
-    {
-      clientID: key.GithubKey.ClientId,
-      clientSecret: key.GithubKey.ClientSecret,
-      callbackURL: key.GithubKey.CallbackUrl,
-    },
-    githubController
-  )
-);
+// passport.use(
+//   new GithubStrategy(
+//     {
+//       clientID: key.GithubKey.ClientId,
+//       clientSecret: key.GithubKey.ClientSecret,
+//       callbackURL: key.GithubKey.CallbackUrl,
+//     },
+//     githubController
+//   )
+// );
 
 app.use(InitialRoutes);
 app.use("/auth", GithubRoutes);
