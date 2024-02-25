@@ -1,5 +1,5 @@
-const User = require("../../Model/User.model");
-const Repository = require("../../Model/UserRepo.model");
+const User = require("../../Model/user.model");
+const Repository = require("../../Model/userRepo.model");
 const {
   getUpdatedFollowerCount,
   getUpdatedFollowingCount,

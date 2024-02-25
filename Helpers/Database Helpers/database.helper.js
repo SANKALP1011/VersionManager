@@ -1,6 +1,6 @@
-const User = require("../../Model/User.model");
-const Repository = require("../../Model/UserRepo.model");
-const PullRequest = require("../../Model/UserPullRequest.model");
+const User = require("../../Model/user.model");
+const Repository = require("../../Model/userRepo.model");
+const PullRequest = require("../../Model/userPullRequest.model");
 
 module.exports = {
   getUserHelper: async (id) => {

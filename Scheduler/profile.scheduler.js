@@ -1,5 +1,5 @@
 const cron = require("node-cron");
-const User = require("../Model/User.model");
+const User = require("../Model/user.model");
 const {
   getUpdatedFollower,
   getUpdatedFollowing,

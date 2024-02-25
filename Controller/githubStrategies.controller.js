@@ -1,5 +1,5 @@
 const express = require("express");
-const User = require("../Model/User.model");
+const User = require("../Model/user.model");
 
 module.exports = {
   githubController: async (token, refreshToken, profile, done) => {
